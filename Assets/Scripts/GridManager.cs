@@ -7,7 +7,7 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private List<Sprite> _cells;
 
-    [SerializeField] private Cell _cellPrefab;
+    [SerializeField] private GameObject _cellPrefab;
 
     [SerializeField] private Sprite _blueCell;
     [SerializeField] private Sprite _redCell;
@@ -30,7 +30,7 @@ public class GridManager : MonoBehaviour
             for (float y = -3.8f; y < _height; y += 0.7f)
             {
                 var spawendCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity, parent);
-                spawendCell.name = $"Cell";
+                spawendCell.name = $"Cell {(int)x}";
                 var colorCell = new GameObject();
                 colorCell.name = $"{(int)x}:{(int)y}";
                 colorCell.transform.SetParent(spawendCell.transform);
