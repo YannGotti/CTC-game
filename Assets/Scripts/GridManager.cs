@@ -4,22 +4,14 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     private float _width = 3, _height = 2;
-
-    [SerializeField] private List<Sprite> _cells;
-
+    [SerializeField] public List<GameObject> _cells;
     [SerializeField] private GameObject _cellPrefab;
-
     [SerializeField] private Sprite _blueCell;
     [SerializeField] private Sprite _redCell;
     [SerializeField] private Sprite _greenCell;
     [SerializeField] private Sprite _purpleCell;
 
-
-
-    private void Start()
-    {
-        GenerateGrid();
-    }
+    private void Start() => GenerateGrid();
 
     void GenerateGrid()
     {
@@ -30,7 +22,7 @@ public class GridManager : MonoBehaviour
             for (float y = -3.8f; y < _height; y += 0.7f)
             {
                 var spawendCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity, parent);
-                spawendCell.name = $"Cell {(int)x}";
+                
                 var colorCell = new GameObject();
                 colorCell.name = $"{(int)x}:{(int)y}";
                 colorCell.transform.SetParent(spawendCell.transform);
@@ -39,14 +31,14 @@ public class GridManager : MonoBehaviour
 
                 RandomizeSprite(spriteRender);
                 spriteRender.sortingOrder = 2;
+                _cells.Add(spawendCell);
+                spawendCell.name = $"Cell {_cells.Count - 1}";
 
                 while (_cells.Count > 0 && _cells[_cells.Count - 1] == spriteRender.sprite)
                     RandomizeSprite(spriteRender);
 
-                while (_cells.Count >= 9 && _cells[_cells.Count - 9] == spriteRender.sprite)
+                while (_cells.Count >= 9 && _cells[_cells.Count - 8] == spriteRender.sprite)
                     RandomizeSprite(spriteRender);
-
-                _cells.Add(spriteRender.sprite);
             }
         }
     }
@@ -61,5 +53,14 @@ public class GridManager : MonoBehaviour
         if (rand == 2) spriteRender.sprite = _redCell;
         if (rand == 3) spriteRender.sprite = _purpleCell;
     }
+
+    public List<GameObject> ReturnSprites() 
+    {
+        return _cells;
+    }
+
+
+
+
 
 }
