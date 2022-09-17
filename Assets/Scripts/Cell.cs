@@ -1,26 +1,25 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Cell : MonoBehaviour
 {
+    #region Поля
     private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight;
     private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
-    private GameObject _selectedCell;
+    private GameController _manager;
+    [SerializeField] private GameObject _selectedCell;
     private int _indexInCellsArray;
     private Vector2 _lastPosition;
-    private GridManager _manager;
     private Transform _parent;
-
-    public UnityEvent<Transform, Transform> OnSlideCell = new UnityEvent<Transform, Transform>();
+    #endregion
 
     private void Start()
     {
-        _manager = GameObject.Find("GridManager").GetComponent<GridManager>();
+        _manager = GameObject.Find("GameController").GetComponent<GameController>();
         _parent = transform.parent;
     }
 
-
+    #region Работа мышью
     private void OnMouseDrag()
     {
         if (!_dragging) return;
@@ -42,20 +41,7 @@ public class Cell : MonoBehaviour
         GetComponent<SpriteRenderer>().sortingOrder = 2;
         transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
         isBorder();
-
         _dragging = true;
-
-    } 
-
-    private void isBorder()
-    {
-        if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8) _borderLeft = true;
-
-        if (_indexInCellsArray >= 72 && _indexInCellsArray <= 80) _borderRight = true;
-
-        for (int i = 0; i < 80; i += 9) if (_indexInCellsArray == i) _borderUp = true;
-
-        for (int i = 8; i < 81; i += 9) if (_indexInCellsArray == i) _borderDown = true;
     }
 
     private void OnMouseUp()
@@ -69,9 +55,24 @@ public class Cell : MonoBehaviour
 
         if (_selectedCell == null) return;
 
-
+        _manager.OnSlideCell(_indexInCellsArray, _manager.ReturnSprites().IndexOf(_selectedCell), _lastPosition);
+        _selectedCell = null;
 
     }
+    #endregion
+
+    #region Проверки на возможность движения
+    private void isBorder()
+    {
+        if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8) _borderLeft = true;
+
+        if (_indexInCellsArray >= 72 && _indexInCellsArray <= 80) _borderRight = true;
+
+        for (int i = 0; i < 80; i += 9) if (_indexInCellsArray == i) _borderUp = true;
+
+        for (int i = 8; i < 81; i += 9) if (_indexInCellsArray == i) _borderDown = true;
+    }
+
 
     private void isMove()
     {
@@ -102,11 +103,16 @@ public class Cell : MonoBehaviour
             transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
+    #endregion
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject;
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Cell") _selectedCell = null;
+    }
 
 }
