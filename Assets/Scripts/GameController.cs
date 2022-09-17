@@ -69,11 +69,6 @@ public class GameController : MonoBehaviour
 
     #endregion
 
-    public List<GameObject> ReturnSprites() 
-    {
-        return _cells;
-    }
-
     #region Перемещение фишек
 
     public void OnSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition)
@@ -89,8 +84,10 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
-
-
+    public List<GameObject> ReturnSprites()
+    {
+        return _cells;
+    }
 
 
 }

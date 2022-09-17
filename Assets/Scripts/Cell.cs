@@ -105,6 +105,8 @@ public class Cell : MonoBehaviour
 
     #endregion
 
+    #region Events
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject;
@@ -114,5 +116,7 @@ public class Cell : MonoBehaviour
     {
         if (collision.gameObject.tag == "Cell") _selectedCell = null;
     }
+
+    #endregion
 
 }
