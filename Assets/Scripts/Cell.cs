@@ -1,22 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Cell : MonoBehaviour
 {
-
-    private float _maxMoving = 0.7f;
-    private float _maxMovingIfNotBorder = 0.1f;
+    private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight;
+    private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
     private GameObject _selectedCell;
     private int _indexInCellsArray;
-
-    [SerializeField] private GridManager _manager;
-
-    private bool _dragging;
-
     private Vector2 _lastPosition;
+    private GridManager _manager;
+    private Transform _parent;
 
+    public UnityEvent<Transform, Transform> OnSlideCell = new UnityEvent<Transform, Transform>();
 
-    private void Start() => _manager = GameObject.Find("GridManager").GetComponent<GridManager>();
+    private void Start()
+    {
+        _manager = GameObject.Find("GridManager").GetComponent<GridManager>();
+        _parent = transform.parent;
+    }
+
 
     private void OnMouseDrag()
     {
@@ -33,17 +36,41 @@ public class Cell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        transform.SetAsLastSibling();
+        transform.SetParent(null);
         _lastPosition = transform.position;
         _indexInCellsArray = _manager.ReturnSprites().IndexOf(gameObject);
+        GetComponent<SpriteRenderer>().sortingOrder = 2;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+        isBorder();
+
         _dragging = true;
 
     } 
 
+    private void isBorder()
+    {
+        if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8) _borderLeft = true;
+
+        if (_indexInCellsArray >= 72 && _indexInCellsArray <= 80) _borderRight = true;
+
+        for (int i = 0; i < 80; i += 9) if (_indexInCellsArray == i) _borderUp = true;
+
+        for (int i = 8; i < 81; i += 9) if (_indexInCellsArray == i) _borderDown = true;
+    }
+
     private void OnMouseUp()
     {
         transform.position = _lastPosition;
+        _borderDown = _borderUp = _borderLeft = _borderRight = false;
+        transform.SetParent(_parent);
+        GetComponent<SpriteRenderer>().sortingOrder = 1;
+        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 2;
         _dragging = false;
+
+        if (_selectedCell == null) return;
+
+
+
     }
 
     private void isMove()
@@ -61,31 +88,24 @@ public class Cell : MonoBehaviour
             transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
 
 
+        
+        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
+        
+        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
+        
+        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
 
-        if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8)
-            if (transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
-                transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
-
-        if (_indexInCellsArray >= 72 && _indexInCellsArray <= 80)
-            if (transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
-                transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
-
-        for (int i = 0; i < 80; i += 9)
-            if (_indexInCellsArray == i)
-                if (transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
-                    transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
-
-        for (int i = 8; i < 81; i += 9)
-            if (_indexInCellsArray == i)
-                if (transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
-                    transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
+        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "Cell") return;
-        _selectedCell = collision.gameObject;
+        if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject;
     }
 
 
