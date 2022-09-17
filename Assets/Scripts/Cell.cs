@@ -11,6 +11,7 @@ public class Cell : MonoBehaviour
     private int _indexInCellsArray;
     private Vector2 _lastPosition;
     private Transform _parent;
+    private int _rotateSlide = -1;
     #endregion
 
     private void Start()
@@ -55,8 +56,9 @@ public class Cell : MonoBehaviour
 
         if (_selectedCell == null) return;
 
-        _manager.OnSlideCell(_indexInCellsArray, _manager.ReturnSprites().IndexOf(_selectedCell), _lastPosition);
+        _manager.OnSlideCell(_indexInCellsArray, _manager.ReturnSprites().IndexOf(_selectedCell), _lastPosition, _rotateSlide);
         _selectedCell = null;
+        _rotateSlide = -1;
 
     }
     #endregion
@@ -77,17 +79,29 @@ public class Cell : MonoBehaviour
     private void isMove()
     {
         if (transform.position.x <= _lastPosition.x - _maxMoving)
-                transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
+        {
+            transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
+            _rotateSlide = 0;
+        }
 
         if (transform.position.x >= _lastPosition.x + _maxMoving)
+        {
             transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y);
+            _rotateSlide = 0;
+        }
 
         if (transform.position.y >= _lastPosition.y + _maxMoving)
+        {
             transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving);
+            _rotateSlide = 1;
+        }
+            
 
         if (transform.position.y <= _lastPosition.y - _maxMoving)
+        {
             transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
-
+            _rotateSlide = 1;
+        }
 
         
         if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)

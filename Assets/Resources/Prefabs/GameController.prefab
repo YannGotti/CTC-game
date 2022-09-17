@@ -51,3 +51,4 @@ MonoBehaviour:
   _redCell: {fileID: 21300000, guid: 4eaa905b33297344a9bb472bea6e2441, type: 3}
   _greenCell: {fileID: 21300000, guid: 530fcc583476bef4cbd5b86fecfca795, type: 3}
   _purpleCell: {fileID: 21300000, guid: 6ccb5604af0b8304597655c96dffac8b, type: 3}
+  _animationSpeedSecond: 0.2
