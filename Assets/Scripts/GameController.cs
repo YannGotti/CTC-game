@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     #region Поля
-    private float _width = 3, _height = 2, _maxMoving = 0.6f;
+    private float _width = 3, _height = 2;
     [SerializeField] public List<GameObject> _cells;
     [SerializeField] private GameObject _cellPrefab;
     [SerializeField] public List<Sprite> _colors;
@@ -136,15 +136,9 @@ public class GameController : MonoBehaviour
         _animationCurveTarget = new AnimationCurve();
         yield break;
     }
-    
-
-
     #endregion
 
-    public List<GameObject> ReturnSprites()
-    {
-        return _cells;
-    }
+    public List<GameObject> ReturnSprites() { return _cells; }
 
 
 }

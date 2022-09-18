@@ -14,11 +14,7 @@ public class Cell : MonoBehaviour
     private int _rotateSlide = -1;
     #endregion
 
-    private void Start()
-    {
-        _manager = GameObject.Find("GameController").GetComponent<GameController>();
-        _parent = transform.parent;
-    }
+    private void Start() { _manager = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
 
     #region Работа мышью
     private void OnMouseDrag()
@@ -36,6 +32,7 @@ public class Cell : MonoBehaviour
 
     private void OnMouseDown()
     {
+        Cursor.visible = false;
         transform.SetParent(null);
         _lastPosition = transform.position;
         _indexInCellsArray = _manager.ReturnSprites().IndexOf(gameObject);
@@ -47,6 +44,7 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
+        Cursor.visible = true;
         transform.position = _lastPosition;
         _borderDown = _borderUp = _borderLeft = _borderRight = false;
         transform.SetParent(_parent);
@@ -78,58 +76,32 @@ public class Cell : MonoBehaviour
 
     private void isMove()
     {
-        if (transform.position.x <= _lastPosition.x - _maxMoving)
-        {
-            transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
-            _rotateSlide = 0;
-        }
+        if (transform.position.x <= _lastPosition.x - _maxMoving) { transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y); _rotateSlide = 0; }
 
-        if (transform.position.x >= _lastPosition.x + _maxMoving)
-        {
-            transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y);
-            _rotateSlide = 0;
-        }
+        if (transform.position.x >= _lastPosition.x + _maxMoving) { transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y); _rotateSlide = 0; }
 
-        if (transform.position.y >= _lastPosition.y + _maxMoving)
-        {
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving);
-            _rotateSlide = 1;
-        }
+        if (transform.position.y >= _lastPosition.y + _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving); _rotateSlide = 1; }
             
 
-        if (transform.position.y <= _lastPosition.y - _maxMoving)
-        {
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
-            _rotateSlide = 1;
-        }
+        if (transform.position.y <= _lastPosition.y - _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving); _rotateSlide = 1; }
 
         
-        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
+        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
         
-        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
+        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
         
-        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
+        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
 
-        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
+        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
     #endregion
 
     #region Events
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject;
-    }
+    private void OnTriggerEnter2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject; }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Cell") _selectedCell = null;
-    }
+    private void OnTriggerExit2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = null; }
 
     #endregion
 
