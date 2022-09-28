@@ -1,0 +1,4 @@
+repository "CTC@HardWorking_Inc@cloud"
+  path "/"
+    br "/main"
+    co "/main"
