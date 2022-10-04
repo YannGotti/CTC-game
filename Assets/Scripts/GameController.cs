@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    #region Поля
     private float _width = 3, _height = 2;
+
+    [Header("РќР°СЃС‚СЂРѕР№РєРё СЏС‡РµРµРє")]
     [SerializeField] public List<GameObject> _cells;
     [SerializeField] private GameObject _cellPrefab;
     [SerializeField] public List<Sprite> _colors;
@@ -16,11 +20,18 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private float _animationSpeedSecond;
 
-    #endregion
+    [Header("РќР°СЃС‚СЂРѕР№РєРё РёРіСЂС‹")]
+    [SerializeField] private Text _textComponent;
+    [SerializeField] private int _steps;
+    
 
-    private void Start() => GenerateGrid();
-
-    #region Сетка
+    private void Start()
+    {
+        GenerateGrid();
+        _textComponent.text = $"{_steps}";
+        EventContoller.singleton.OnSlideCell.AddListener(LostStep);
+        EventContoller.singleton.OnGameOver.AddListener(GameOver);
+    } 
 
     void GenerateGrid()
     {
@@ -46,7 +57,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-
     void RandomizeSprite(SpriteRenderer spriteRender)
     {
         var color = Randomize();
@@ -70,9 +80,6 @@ public class GameController : MonoBehaviour
         return null;
     }
 
-    #endregion
-
-    #region Перемещение фишек
     public void OnSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
     {
         var owner = _cells[indexOwner];
@@ -80,6 +87,8 @@ public class GameController : MonoBehaviour
 
         _cells[indexOwner] = target;
         _cells[indexTarget] = owner;
+
+        EventContoller.singleton.OnSlideCell.Invoke(owner);
 
         StartCoroutine(SlideCell(owner, target, lastPosition, rotateSlide));
     }
@@ -136,9 +145,15 @@ public class GameController : MonoBehaviour
         _animationCurveTarget = new AnimationCurve();
         yield break;
     }
-    #endregion
-
     public List<GameObject> ReturnSprites() { return _cells; }
 
+    private void LostStep(GameObject obj)
+    {
+        _textComponent.text = $"{_steps -= 1}";
+
+        if (_steps == 0) EventContoller.singleton.OnGameOver.Invoke();
+    }
+
+    private void GameOver() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
 }

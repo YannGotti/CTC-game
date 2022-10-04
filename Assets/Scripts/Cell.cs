@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class Cell : MonoBehaviour
 {
-    #region Поля
     private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight;
     private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
     private GameController _manager;
@@ -12,11 +11,9 @@ public class Cell : MonoBehaviour
     private Vector2 _lastPosition;
     private Transform _parent;
     private int _rotateSlide = -1;
-    #endregion
 
     private void Start() { _manager = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
 
-    #region Работа мышью
     private void OnMouseDrag()
     {
         if (!_dragging) return;
@@ -59,9 +56,7 @@ public class Cell : MonoBehaviour
         _rotateSlide = -1;
 
     }
-    #endregion
 
-    #region Проверки на возможность движения
     private void isBorder()
     {
         if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8) _borderLeft = true;
@@ -95,14 +90,11 @@ public class Cell : MonoBehaviour
         if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
-    #endregion
 
-    #region Events
 
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject; }
 
     private void OnTriggerExit2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = null; }
 
-    #endregion
 
 }
