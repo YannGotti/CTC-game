@@ -1,5 +1,5 @@
+using Mono.Cecil;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Cell : MonoBehaviour
 {
@@ -11,6 +11,7 @@ public class Cell : MonoBehaviour
     private Vector2 _lastPosition;
     private Transform _parent;
     private int _rotateSlide = -1;
+
 
     private void Start() { _manager = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
 
@@ -29,6 +30,8 @@ public class Cell : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
+
         Cursor.visible = false;
         transform.SetParent(null);
         _lastPosition = transform.position;
@@ -41,6 +44,8 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
+
         Cursor.visible = true;
         transform.position = _lastPosition;
         _borderDown = _borderUp = _borderLeft = _borderRight = false;

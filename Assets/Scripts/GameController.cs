@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Sprite _redCell;
     [SerializeField] private Sprite _greenCell;
     [SerializeField] private Sprite _purpleCell;
+    [SerializeField] private Sprite _comboCell;
 
     [SerializeField] private float _animationSpeedSecond;
 
@@ -28,14 +29,19 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         GenerateGrid();
+        FindPath(null);
         _textComponent.text = $"{_steps}";
         EventContoller.singleton.OnSlideCell.AddListener(LostStep);
+        EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
-    } 
+    }
 
+    #region Grid
     void GenerateGrid()
     {
         Transform parent = GameObject.Find("Cells").transform;
+        int rand = Random.Range(-10, 10);
+
 
         for (float x = -2.8f; x < _width; x += 0.7f)
         {
@@ -51,18 +57,22 @@ public class GameController : MonoBehaviour
 
                 spriteRender.sortingOrder = 2;
                 _cells.Add(spawendCell);
-                RandomizeSprite(spriteRender);
+                RandomizeSprite(spriteRender, rand);
                 spawendCell.name = $"Cell {_cells.Count}";
             }
         }
     }
 
-    void RandomizeSprite(SpriteRenderer spriteRender)
+    void RandomizeSprite(SpriteRenderer spriteRender, int rand)
     {
         var color = Randomize();
 
+
+        if (_colors.Count == 30 + rand || _colors.Count == 70 + rand) color = _comboCell;
+
         while (_colors.Count > 9 && color == _colors[_colors.Count - 9] || _colors.Count > 1 && color == _colors[_colors.Count - 1])
             color = Randomize();
+            
 
         _colors.Add(color);
         spriteRender.sprite = color;
@@ -80,10 +90,15 @@ public class GameController : MonoBehaviour
         return null;
     }
 
+    #endregion
+
+    #region Cells
     public void OnSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
     {
         var owner = _cells[indexOwner];
         var target = _cells[indexTarget];
+
+        if (target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == _comboCell) return;
 
         _cells[indexOwner] = target;
         _cells[indexTarget] = owner;
@@ -147,6 +162,18 @@ public class GameController : MonoBehaviour
     }
     public List<GameObject> ReturnSprites() { return _cells; }
 
+    #endregion
+
+    #region AlhorytmFindPath
+
+    private void FindPath(GameObject obj)
+    {
+
+    }
+
+    #endregion
+
+    #region GameOver
     private void LostStep(GameObject obj)
     {
         _textComponent.text = $"{_steps -= 1}";
@@ -156,4 +183,5 @@ public class GameController : MonoBehaviour
 
     private void GameOver() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
+    #endregion
 }
