@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
+    #region Polya
+
     private float _width = 3, _height = 2;
+
 
     [Header("Настройки ячеек")]
     [SerializeField] public List<GameObject> _cells;
@@ -24,16 +27,22 @@ public class GameController : MonoBehaviour
     [Header("Настройки игры")]
     [SerializeField] private Text _textComponent;
     [SerializeField] private int _steps;
-    
+    [SerializeField] private int _stepsSnake;
+    [SerializeField] private int _indexSelectedCell;
+
+
+    #endregion
 
     private void Start()
     {
         GenerateGrid();
         FindPath(null);
         _textComponent.text = $"{_steps}";
+
         EventContoller.singleton.OnSlideCell.AddListener(LostStep);
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
+        EventContoller.singleton.AnimationSlideCell.AddListener(OnSlideCell);
     }
 
     #region Grid
@@ -103,7 +112,8 @@ public class GameController : MonoBehaviour
         _cells[indexOwner] = target;
         _cells[indexTarget] = owner;
 
-        EventContoller.singleton.OnSlideCell.Invoke(owner);
+        _colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        _colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
 
         StartCoroutine(SlideCell(owner, target, lastPosition, rotateSlide));
     }
@@ -156,6 +166,8 @@ public class GameController : MonoBehaviour
             yield return null;
         }
 
+        EventContoller.singleton.OnSlideCell.Invoke(owner);
+
         _animationCurve = new AnimationCurve();
         _animationCurveTarget = new AnimationCurve();
         yield break;
@@ -169,6 +181,59 @@ public class GameController : MonoBehaviour
     private void FindPath(GameObject obj)
     {
 
+    }
+
+    #endregion
+
+    #region SnakeController
+    public bool IsMovePlayer(int index, Sprite color)
+    {
+        _indexSelectedCell = index;
+
+        if (_stepsSnake == 0 && _indexSelectedCell == 9)
+        {
+            _stepsSnake++;
+            return true;
+        }
+
+        if (color == null) return false;
+
+        if (color == _colors[index])
+        {
+            _stepsSnake++;
+            return true;
+        }
+
+        return false;
+    }
+    
+    public Sprite SelectSprite(int index) { return _colors[index]; }
+
+    public Transform SelectTransform(int index) { return _cells[index].transform; }
+
+    public bool IsBorderCell(int lastPosition, int currentPosition)
+    {
+        if (lastPosition == -1) return true;
+
+        if (lastPosition + 9 == currentPosition || lastPosition - 9 == currentPosition ||
+            lastPosition + 1 == currentPosition || lastPosition - 1 == currentPosition) return true;
+
+        return false;
+    }
+
+    public string SelectSide(int lastPosition, int currentPosition)
+    {
+        if (lastPosition == -1) return "t";
+
+        if (lastPosition + 9 == currentPosition) return "r"; //right
+
+        if (lastPosition - 9 == currentPosition) return "l"; //left
+
+        if (lastPosition + 1 == currentPosition) return "t"; //top
+
+        if (lastPosition - 1 == currentPosition) return "b"; //bot
+
+        return null;
     }
 
     #endregion

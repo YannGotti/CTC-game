@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 511983409721818922}
-  - component: {fileID: 511983409721818923}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -32,26 +31,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &511983409721818923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 511983409721818921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1330ed15284f82442b255886ed69a7ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cells: []
-  _cellPrefab: {fileID: 0}
-  _colors: []
-  _blueCell: {fileID: 21300000, guid: f465e95ee57a8d94a910146a03b07a94, type: 3}
-  _redCell: {fileID: 21300000, guid: 4eaa905b33297344a9bb472bea6e2441, type: 3}
-  _greenCell: {fileID: 21300000, guid: 530fcc583476bef4cbd5b86fecfca795, type: 3}
-  _purpleCell: {fileID: 21300000, guid: 6ccb5604af0b8304597655c96dffac8b, type: 3}
-  _comboCell: {fileID: 21300000, guid: 7a1ff5d545077af4b8b4b8f96cddda5f, type: 3}
-  _animationSpeedSecond: 0.3
-  _textComponent: {fileID: 0}
-  _steps: 50

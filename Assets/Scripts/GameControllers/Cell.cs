@@ -5,15 +5,15 @@ public class Cell : MonoBehaviour
 {
     private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight;
     private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
-    private GameController _manager;
+    private GameController _gameController;
     [SerializeField] private GameObject _selectedCell;
-    private int _indexInCellsArray;
+    [SerializeField] private int _indexInCellsArray;
     private Vector2 _lastPosition;
     private Transform _parent;
     private int _rotateSlide = -1;
 
 
-    private void Start() { _manager = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
+    private void Start() { _gameController = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
 
     private void OnMouseDrag()
     {
@@ -32,10 +32,11 @@ public class Cell : MonoBehaviour
     {
         if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
 
+
         Cursor.visible = false;
         transform.SetParent(null);
         _lastPosition = transform.position;
-        _indexInCellsArray = _manager.ReturnSprites().IndexOf(gameObject);
+        EventContoller.singleton.OnDownCell.Invoke(gameObject, _indexInCellsArray = _gameController.ReturnSprites().IndexOf(gameObject));
         GetComponent<SpriteRenderer>().sortingOrder = 2;
         transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
         isBorder();
@@ -56,7 +57,8 @@ public class Cell : MonoBehaviour
 
         if (_selectedCell == null) return;
 
-        _manager.OnSlideCell(_indexInCellsArray, _manager.ReturnSprites().IndexOf(_selectedCell), _lastPosition, _rotateSlide);
+        EventContoller.singleton.AnimationSlideCell.Invoke(_indexInCellsArray, _gameController.ReturnSprites().IndexOf(_selectedCell), _lastPosition, _rotateSlide);
+
         _selectedCell = null;
         _rotateSlide = -1;
 
@@ -94,8 +96,6 @@ public class Cell : MonoBehaviour
 
         if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
-
-
 
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject; }
 
