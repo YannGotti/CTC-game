@@ -100,8 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedCell: {fileID: 0}
-  _indexInCellsArray: 0
-  _snake: {fileID: 6048304268046759445, guid: 3e2ec680ae23d624ebdd84435907c73c, type: 3}
+  IndexInCellsArray: 0
 --- !u!61 &5600480968674419014
 BoxCollider2D:
   m_ObjectHideFlags: 0

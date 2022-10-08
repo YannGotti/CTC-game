@@ -256,6 +256,10 @@ PrefabInstance:
       value: -2.1
       objectReference: {fileID: 0}
     - target: {fileID: 1308195650941506560, guid: 3e2ec680ae23d624ebdd84435907c73c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308195650941506560, guid: 3e2ec680ae23d624ebdd84435907c73c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -651,6 +655,9 @@ MonoBehaviour:
   AnimationSlideCell:
     m_PersistentCalls:
       m_Calls: []
+  MoveHeadSnake:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1100278098
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +703,7 @@ GameObject:
   - component: {fileID: 1114227460}
   m_Layer: 0
   m_Name: Out
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -709,7 +716,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114227458}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.02, y: 5.965, z: -0.07202839}
+  m_LocalPosition: {x: 4.02, y: 5.958, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1180,6 +1187,6 @@ MonoBehaviour:
   _comboCell: {fileID: 21300000, guid: 7a1ff5d545077af4b8b4b8f96cddda5f, type: 3}
   _animationSpeedSecond: 0.2
   _textComponent: {fileID: 386456156}
-  _steps: 50
+  _steps: 150
   _stepsSnake: 0
   _indexSelectedCell: 0

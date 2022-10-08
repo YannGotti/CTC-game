@@ -15,4 +15,6 @@ public class EventContoller : MonoBehaviour
 
     public UnityEvent<int, int, Vector2, int> AnimationSlideCell = new UnityEvent<int, int, Vector2, int>();
 
+    public UnityEvent<Transform, string> MoveHeadSnake = new();
+
 }

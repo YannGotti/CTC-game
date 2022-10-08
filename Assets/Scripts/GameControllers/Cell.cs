@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight;
+    [SerializeField] private GameObject _selectedCell;
+    [SerializeField] public int IndexInCellsArray;
+    private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight, _isMove;
     private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
     private GameController _gameController;
-    [SerializeField] private GameObject _selectedCell;
-    [SerializeField] private int _indexInCellsArray;
     private Vector2 _lastPosition;
     private Transform _parent;
     private int _rotateSlide = -1;
@@ -25,21 +25,22 @@ public class Cell : MonoBehaviour
 
         transform.position = _mousePosition;
 
-        isMove();
+        MoveMouseCell();
+        _isMove = IsMove();
     }
 
     private void OnMouseDown()
     {
-        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
 
+        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
 
         Cursor.visible = false;
         transform.SetParent(null);
         _lastPosition = transform.position;
-        EventContoller.singleton.OnDownCell.Invoke(gameObject, _indexInCellsArray = _gameController.ReturnSprites().IndexOf(gameObject));
+        IndexInCellsArray = _gameController.ReturnSprites().IndexOf(gameObject);
         GetComponent<SpriteRenderer>().sortingOrder = 2;
         transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
-        isBorder();
+        IsBorder();
         _dragging = true;
     }
 
@@ -56,34 +57,41 @@ public class Cell : MonoBehaviour
         _dragging = false;
 
         if (_selectedCell == null) return;
+        if (!_isMove) return;
 
-        EventContoller.singleton.AnimationSlideCell.Invoke(_indexInCellsArray, _gameController.ReturnSprites().IndexOf(_selectedCell), _lastPosition, _rotateSlide);
+        EventContoller.singleton.AnimationSlideCell.Invoke(IndexInCellsArray, _gameController.ReturnSprites().IndexOf(_selectedCell), _lastPosition, _rotateSlide);
 
         _selectedCell = null;
         _rotateSlide = -1;
-
     }
 
-    private void isBorder()
+    private void OnMouseOver()
     {
-        if (_indexInCellsArray >= 0 && _indexInCellsArray <= 8) _borderLeft = true;
+        if (!Input.GetMouseButtonDown(1)) return;
 
-        if (_indexInCellsArray >= 72 && _indexInCellsArray <= 80) _borderRight = true;
-
-        for (int i = 0; i < 80; i += 9) if (_indexInCellsArray == i) _borderUp = true;
-
-        for (int i = 8; i < 81; i += 9) if (_indexInCellsArray == i) _borderDown = true;
+        EventContoller.singleton.OnDownCell.Invoke(gameObject, _gameController.ReturnSprites().IndexOf(gameObject));
     }
 
 
-    private void isMove()
+    private void IsBorder()
+    {
+        if (IndexInCellsArray >= 0 && IndexInCellsArray <= 8) _borderLeft = true;
+
+        if (IndexInCellsArray >= 72 && IndexInCellsArray <= 80) _borderRight = true;
+
+        for (int i = 0; i < 80; i += 9) if (IndexInCellsArray == i) _borderUp = true;
+
+        for (int i = 8; i < 81; i += 9) if (IndexInCellsArray == i) _borderDown = true;
+    }
+
+
+    private void MoveMouseCell()
     {
         if (transform.position.x <= _lastPosition.x - _maxMoving) { transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y); _rotateSlide = 0; }
 
         if (transform.position.x >= _lastPosition.x + _maxMoving) { transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y); _rotateSlide = 0; }
 
         if (transform.position.y >= _lastPosition.y + _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving); _rotateSlide = 1; }
-            
 
         if (transform.position.y <= _lastPosition.y - _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving); _rotateSlide = 1; }
 
@@ -95,6 +103,23 @@ public class Cell : MonoBehaviour
         if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
 
         if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
+    }
+
+    private bool IsMove()
+    {
+        if (transform.position == new Vector3(_lastPosition.x - _maxMoving, _lastPosition.y))
+            return true;
+
+        if (transform.position == new Vector3(_lastPosition.x + _maxMoving, _lastPosition.y))
+            return true;
+
+        if (transform.position == new Vector3(_lastPosition.x, _lastPosition.y + _maxMoving))
+            return true;
+
+        if (transform.position == new Vector3(_lastPosition.x, _lastPosition.y - _maxMoving))
+            return true;
+
+        return false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.gameObject.tag == "Cell") _selectedCell = collision.gameObject; }

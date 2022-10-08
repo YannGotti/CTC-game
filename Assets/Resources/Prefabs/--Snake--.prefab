@@ -217,6 +217,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameController: {fileID: 0}
   _colorSnake: {fileID: 0}
+  _lastPositionIndex: -1
+  _currentPositionIndex: 0
+  _animationSpeed: 0
 --- !u!1 &8723665222585718809
 GameObject:
   m_ObjectHideFlags: 0

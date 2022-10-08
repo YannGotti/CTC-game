@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
-    #region Polya
+    #region Fields
 
     private float _width = 3, _height = 2;
 
@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
         EventContoller.singleton.OnSlideCell.AddListener(LostStep);
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
-        EventContoller.singleton.AnimationSlideCell.AddListener(OnSlideCell);
+        EventContoller.singleton.AnimationSlideCell.AddListener(AnimationSlideCell);
     }
 
     #region Grid
@@ -102,7 +102,7 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Cells
-    public void OnSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
+    public void AnimationSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
     {
         var owner = _cells[indexOwner];
         var target = _cells[indexTarget];
@@ -111,6 +111,9 @@ public class GameController : MonoBehaviour
 
         _cells[indexOwner] = target;
         _cells[indexTarget] = owner;
+
+        _cells[indexOwner].GetComponent<Cell>().IndexInCellsArray = indexTarget;
+        _cells[indexTarget].GetComponent<Cell>().IndexInCellsArray = indexOwner;
 
         _colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
         _colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
@@ -234,6 +237,13 @@ public class GameController : MonoBehaviour
         if (lastPosition - 1 == currentPosition) return "b"; //bot
 
         return null;
+    }
+
+    public IEnumerator DestroyCell(int indexCell)
+    {
+        yield return new WaitForSeconds(1);
+        Destroy(_cells[indexCell]);
+        yield break;
     }
 
     #endregion

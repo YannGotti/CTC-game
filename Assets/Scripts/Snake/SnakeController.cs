@@ -1,10 +1,5 @@
-using System;
 using System.Collections;
-using System.Net.Sockets;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class SnakeController : MonoBehaviour
 {
@@ -12,22 +7,22 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private GameController _gameController;
     [SerializeField] private Sprite _colorSnake;
     [SerializeField] private int _lastPositionIndex = -1;
-    [SerializeField] public int _currentPositionIndex;
+
+    [SerializeField] private int _currentPositionIndex;
 
     [Header("Настройки анимации")]
     [SerializeField] private float _animationSpeed;
 
-
-    private Transform _head;
-    private Transform _body_0;
-    private Transform _body_1;
+    private Transform _headTransform;
+    private Transform _bodyOneTransform;
+    private Transform _bodyTwoTransform;
 
     private void Start()
     {
-        EventContoller.singleton.OnDownCell.AddListener(OnDownCell);
-        _head = transform.GetChild(0);
-        _body_0 = transform.GetChild(1);
-        _body_1 = transform.GetChild(2);
+         EventContoller.singleton.OnDownCell.AddListener(OnDownCell);
+        _headTransform = transform.GetChild(0);
+        _bodyOneTransform = transform.GetChild(1);
+        _bodyTwoTransform = transform.GetChild(2);
     }
 
     private void OnDownCell(GameObject obj, int index)
@@ -40,21 +35,28 @@ public class SnakeController : MonoBehaviour
 
         _colorSnake = _gameController.SelectSprite(index);
 
-        Move(_gameController.SelectSide(_lastPositionIndex, index));
+        string side = _gameController.SelectSide(_lastPositionIndex, index);
+
+        Move(side);
+        StartCoroutine(MoveSnakeBody());
 
         _lastPositionIndex = index;
+        StartCoroutine(_gameController.DestroyCell(_lastPositionIndex));
+
     }
 
     private void Move(string side)
     {
         if (side == null) return;
 
+        EventContoller.singleton.MoveHeadSnake.Invoke(_headTransform, side);
 
-        RotateSnake(side); // rotate
-        StartCoroutine(MoveSnake(side)); // move animation
+        RotateSnakeHead(side); // rotate
+        StartCoroutine(MoveSnakeHead(side)); // move animation
+
     }
 
-    private void RotateSnake(string side)
+    private void RotateSnakeHead(string side)
     {
         Vector3 rotation = new();
 
@@ -66,10 +68,10 @@ public class SnakeController : MonoBehaviour
 
         if (side == "r") rotation = new Vector3(0, 0, 90);
 
-        _head.eulerAngles = rotation;
+        _headTransform.eulerAngles = rotation;
     }
 
-    IEnumerator MoveSnake(string side)
+    IEnumerator MoveSnakeHead(string side)
     {
         bool action = true;
         float _currentTimeCurve = 0;
@@ -79,15 +81,15 @@ public class SnakeController : MonoBehaviour
 
         if (side == "t" || side == "b")
         {
-            _animationCurve.AddKey(0, _head.position.y);
-            _animationCurve.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_head.position.y, target.transform.position.y, 0));
+            _animationCurve.AddKey(0, _headTransform.position.y);
+            _animationCurve.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_headTransform.position.y, target.transform.position.y, 0));
             _animationCurve.AddKey(_animationSpeed, target.transform.position.y);
         }
 
         if (side == "l" || side == "r")
         {
-            _animationCurve.AddKey(0, _head.position.x);
-            _animationCurve.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_head.position.x, target.transform.position.x, 0));
+            _animationCurve.AddKey(0, _headTransform.position.x);
+            _animationCurve.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_headTransform.position.x, target.transform.position.x, 0));
             _animationCurve.AddKey(_animationSpeed, target.transform.position.x);
         }
 
@@ -95,9 +97,62 @@ public class SnakeController : MonoBehaviour
 
         while (action)
         {
-            if (side == "t" || side == "b") _head.transform.position = new Vector2(_head.position.x, _animationCurve.Evaluate(_currentTimeCurve));
+            if (side == "t" || side == "b") _headTransform.transform.position = new Vector2(_headTransform.position.x, _animationCurve.Evaluate(_currentTimeCurve));
 
-            if (side == "l" || side == "r") _head.transform.position = new Vector2(_animationCurve.Evaluate(_currentTimeCurve), _head.position.y);
+            if (side == "l" || side == "r") _headTransform.transform.position = new Vector2(_animationCurve.Evaluate(_currentTimeCurve), _headTransform.position.y);
+
+            _currentTimeCurve += Time.deltaTime;
+            action = _totalTimeCurve >= _currentTimeCurve;
+
+            yield return null;
+        }
+
+        if (CanExit()) EventContoller.singleton.OnGameOver.Invoke(); // Конец игры Победа
+
+        yield break;
+    }
+
+    IEnumerator MoveSnakeBody()
+    {
+        bool action = true;
+        float _currentTimeCurve = 0;
+
+        AnimationCurve _animationCurveBodyOneY = new AnimationCurve();
+        AnimationCurve _animationCurveBodyOneX = new AnimationCurve();
+
+        AnimationCurve _animationCurveBodyTwoY = new AnimationCurve();
+        AnimationCurve _animationCurveBodyTwoX = new AnimationCurve();
+
+        _animationCurveBodyOneY.AddKey(0, _bodyOneTransform.position.y);
+        _animationCurveBodyOneY.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_bodyOneTransform.position.y, _headTransform.position.y, 0));
+        _animationCurveBodyOneY.AddKey(_animationSpeed, _headTransform.position.y);
+
+        _animationCurveBodyTwoY.AddKey(0, _bodyTwoTransform.position.y);
+        _animationCurveBodyTwoY.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_bodyTwoTransform.position.y, _bodyOneTransform.position.y, 0));
+        _animationCurveBodyTwoY.AddKey(_animationSpeed, _bodyOneTransform.position.y);
+
+
+
+        _animationCurveBodyOneX.AddKey(0, _bodyOneTransform.position.x);
+        _animationCurveBodyOneX.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_bodyOneTransform.position.x, _headTransform.position.x, 0));
+        _animationCurveBodyOneX.AddKey(_animationSpeed, _headTransform.position.x);
+
+        _animationCurveBodyTwoX.AddKey(0, _bodyTwoTransform.position.x);
+        _animationCurveBodyTwoX.AddKey(_animationSpeed * 0.5f, Mathf.Lerp(_bodyTwoTransform.position.x, _bodyOneTransform.position.x, 0));
+        _animationCurveBodyTwoX.AddKey(_animationSpeed, _bodyOneTransform.position.x);
+
+        float _totalTimeCurve = _animationCurveBodyOneY.keys[_animationCurveBodyOneY.keys.Length - 1].time;
+
+        while (action)
+        {
+            _bodyOneTransform.transform.position = new Vector2(_bodyOneTransform.position.x, _animationCurveBodyOneY.Evaluate(_currentTimeCurve));
+
+            _bodyOneTransform.transform.position = new Vector2(_animationCurveBodyOneX.Evaluate(_currentTimeCurve), _bodyOneTransform.position.y);
+
+
+            _bodyTwoTransform.transform.position = new Vector2(_bodyTwoTransform.position.x, _animationCurveBodyTwoY.Evaluate(_currentTimeCurve));
+
+            _bodyTwoTransform.transform.position = new Vector2(_animationCurveBodyTwoX.Evaluate(_currentTimeCurve), _bodyTwoTransform.position.y);
 
             _currentTimeCurve += Time.deltaTime;
             action = _totalTimeCurve >= _currentTimeCurve;
@@ -108,5 +163,12 @@ public class SnakeController : MonoBehaviour
         yield break;
     }
 
+    private bool CanExit()
+    {
+        Vector3 position = _headTransform.position;
 
+        if (position.x > 1.8f && position.x < 2.2f && position.y < 2 && position.y > 1.5f) return true;
+
+        return false;
+    }
 }
