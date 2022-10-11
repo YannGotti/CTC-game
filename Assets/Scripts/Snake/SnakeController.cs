@@ -78,7 +78,7 @@ public class SnakeController : MonoBehaviour
         _headTransform.eulerAngles = rotation;
     }
 
-    IEnumerator MoveSnakeHead(string side)
+    private IEnumerator MoveSnakeHead(string side)
     {
         bool action = true;
         float _currentTimeCurve = 0;
@@ -119,7 +119,7 @@ public class SnakeController : MonoBehaviour
         yield break;
     }
 
-    IEnumerator MoveSnakeBody()
+    private IEnumerator MoveSnakeBody()
     {
         bool action = true;
         float _currentTimeCurve = 0;
@@ -170,7 +170,7 @@ public class SnakeController : MonoBehaviour
         yield break;
     }
 
-    IEnumerator CooldownMove()
+    private IEnumerator CooldownMove()
     {
         yield return new WaitForSeconds(_cooldown);
 
