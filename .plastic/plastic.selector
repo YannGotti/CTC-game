@@ -1,4 +1,0 @@
-repository "CTC@HardWorking_Inc@cloud"
-  path "/"
-    smartbranch "/main/generalized-logic"    
-     
