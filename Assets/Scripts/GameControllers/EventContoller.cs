@@ -17,4 +17,6 @@ public class EventContoller : MonoBehaviour
 
     public UnityEvent<Transform, string> MoveHeadSnake = new();
 
+    public UnityEvent OnComboCell = new UnityEvent();
+
 }

@@ -9,13 +9,14 @@ public class GameController : MonoBehaviour
 {
     #region Fields
 
-    private float _width = 3, _height = 2;
-
-
-    [Header("Настройки ячеек")]
-    [SerializeField] public List<GameObject> _cells;
+    private readonly float _width = 3;
+    private readonly float _height = 2;
+    [Header("Settings cells")]
+    public List<GameObject> Сells;
+    public List<Sprite> Colors;
     [SerializeField] private GameObject _cellPrefab;
-    [SerializeField] public List<Sprite> _colors;
+
+    [Header("Colors cells")]
     [SerializeField] private Sprite _blueCell;
     [SerializeField] private Sprite _redCell;
     [SerializeField] private Sprite _greenCell;
@@ -24,13 +25,17 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private float _animationSpeedSecond;
 
-    [Header("Настройки игры")]
+    [Header("Settings game")]
     [SerializeField] private Text _textComponent;
     [SerializeField] private int _steps;
     [SerializeField] private int _stepsSnake;
-    [SerializeField] private int _indexSelectedCell;
+    private int _indexSelectedCell;
 
+    [Header("Settings sounds")]
+    [SerializeField] private AudioSource _audioSource;
 
+    //[Header("Settings particles")]
+    //[SerializeField] private GameObject _particleDestroyCell;
     #endregion
 
     private void Start()
@@ -65,9 +70,9 @@ public class GameController : MonoBehaviour
                 var spriteRender = colorCell.AddComponent<SpriteRenderer>();
 
                 spriteRender.sortingOrder = 2;
-                _cells.Add(spawendCell);
+                Сells.Add(spawendCell);
                 RandomizeSprite(spriteRender, rand);
-                spawendCell.name = $"Cell {_cells.Count}";
+                spawendCell.name = $"Cell {Сells.Count}";
             }
         }
     }
@@ -77,13 +82,13 @@ public class GameController : MonoBehaviour
         var color = Randomize();
 
 
-        if (_colors.Count == 30 + rand || _colors.Count == 70 + rand) color = _comboCell;
+        if (Colors.Count == 30 + rand || Colors.Count == 70 + rand) color = _comboCell;
 
-        while (_colors.Count > 9 && color == _colors[_colors.Count - 9] || _colors.Count > 1 && color == _colors[_colors.Count - 1])
+        while (Colors.Count > 9 && color == Colors[Colors.Count - 9] || Colors.Count > 1 && color == Colors[Colors.Count - 1])
             color = Randomize();
             
 
-        _colors.Add(color);
+        Colors.Add(color);
         spriteRender.sprite = color;
     }
 
@@ -104,19 +109,19 @@ public class GameController : MonoBehaviour
     #region Cells
     public void AnimationSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
     {
-        var owner = _cells[indexOwner];
-        var target = _cells[indexTarget];
+        var owner = Сells[indexOwner];
+        var target = Сells[indexTarget];
 
         if (target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == _comboCell) return;
 
-        _cells[indexOwner] = target;
-        _cells[indexTarget] = owner;
+        Сells[indexOwner] = target;
+        Сells[indexTarget] = owner;
 
-        _cells[indexOwner].GetComponent<Cell>().IndexInCellsArray = indexTarget;
-        _cells[indexTarget].GetComponent<Cell>().IndexInCellsArray = indexOwner;
+        Сells[indexOwner].GetComponent<Cell>().IndexInCellsArray = indexTarget;
+        Сells[indexTarget].GetComponent<Cell>().IndexInCellsArray = indexOwner;
 
-        _colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-        _colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        Colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        Colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
 
         StartCoroutine(SlideCell(owner, target, lastPosition, rotateSlide));
     }
@@ -127,22 +132,27 @@ public class GameController : MonoBehaviour
 
         float _currentTimeCurve = 0;
 
+        Vector3 ownerPosition = lastPosition;
+        Vector3 targetPosition = target.transform.position;
+
         AnimationCurve _animationCurve = new AnimationCurve();
         AnimationCurve _animationCurveTarget = new AnimationCurve();
 
         if (rotateSlide == 0)
         {
-            _animationCurve.AddKey(0, lastPosition.x);
-            _animationCurve.AddKey(_animationSpeedSecond, target.transform.position.x);
-            _animationCurveTarget.AddKey(0, target.transform.position.x);
+            _animationCurve.AddKey(0, ownerPosition.x);
+            _animationCurve.AddKey(_animationSpeedSecond, targetPosition.x);
+
+            _animationCurveTarget.AddKey(0, targetPosition.x);
             _animationCurveTarget.AddKey(_animationSpeedSecond, lastPosition.x);
 
         }
-        else
+        if (rotateSlide == 1)
         {
-            _animationCurve.AddKey(0, lastPosition.y);
-            _animationCurve.AddKey(_animationSpeedSecond, target.transform.position.y);
-            _animationCurveTarget.AddKey(0, target.transform.position.y);
+            _animationCurve.AddKey(0, ownerPosition.y);
+            _animationCurve.AddKey(_animationSpeedSecond, targetPosition.y);
+
+            _animationCurveTarget.AddKey(0, targetPosition.y);
             _animationCurveTarget.AddKey(_animationSpeedSecond, lastPosition.y);
         }
 
@@ -150,32 +160,34 @@ public class GameController : MonoBehaviour
 
         while (action)
         {
-            switch (rotateSlide)
+
+            if (rotateSlide == 0)
             {
-                case 0:
-                    owner.transform.position = new Vector2(_animationCurve.Evaluate(_currentTimeCurve), owner.transform.position.y);
-                    target.transform.position = new Vector2(_animationCurveTarget.Evaluate(_currentTimeCurve), owner.transform.position.y);
-                    _currentTimeCurve += Time.deltaTime;
-                    break;
-                case 1:
-                    owner.transform.position = new Vector2(owner.transform.position.x, _animationCurve.Evaluate(_currentTimeCurve));
-                    target.transform.position = new Vector2(owner.transform.position.x, _animationCurveTarget.Evaluate(_currentTimeCurve));
-                    _currentTimeCurve += Time.deltaTime;
-                    break;
+                owner.transform.position = new Vector2(_animationCurve.Evaluate(_currentTimeCurve), owner.transform.position.y);
+                target.transform.position = new Vector2(_animationCurveTarget.Evaluate(_currentTimeCurve), owner.transform.position.y);
+                
             }
 
+            if (rotateSlide == 1)
+            {
+                owner.transform.position = new Vector2(owner.transform.position.x, _animationCurve.Evaluate(_currentTimeCurve));
+                target.transform.position = new Vector2(owner.transform.position.x, _animationCurveTarget.Evaluate(_currentTimeCurve));
+            }
+
+            _currentTimeCurve += Time.deltaTime;
             action = _totalTimeCurve >= _currentTimeCurve;
 
             yield return null;
         }
 
-        EventContoller.singleton.OnSlideCell.Invoke(owner);
+        owner.transform.position = targetPosition;
+        target.transform.position = ownerPosition;
 
-        _animationCurve = new AnimationCurve();
-        _animationCurveTarget = new AnimationCurve();
+        _audioSource.Play();
+        EventContoller.singleton.OnSlideCell.Invoke(owner);
         yield break;
     }
-    public List<GameObject> ReturnSprites() { return _cells; }
+    public List<GameObject> ReturnSprites() { return Сells; }
 
     #endregion
 
@@ -201,8 +213,16 @@ public class GameController : MonoBehaviour
 
         if (color == null) return false;
 
-        if (color == _colors[index])
+        if (color == Colors[index] || color == _comboCell)
         {
+            _stepsSnake++;
+            return true;
+        }
+
+        if (Colors[_indexSelectedCell] == _comboCell)
+        {
+            EventContoller.singleton.OnComboCell.Invoke();
+
             _stepsSnake++;
             return true;
         }
@@ -210,9 +230,9 @@ public class GameController : MonoBehaviour
         return false;
     }
     
-    public Sprite SelectSprite(int index) { return _colors[index]; }
+    public Sprite SelectSprite(int index) { return Colors[index]; }
 
-    public Transform SelectTransform(int index) { return _cells[index].transform; }
+    public Transform SelectTransform(int index) { return Сells[index].transform; }
 
     public bool IsBorderCell(int lastPosition, int currentPosition)
     {
@@ -241,8 +261,12 @@ public class GameController : MonoBehaviour
 
     public IEnumerator DestroyCell(int indexCell)
     {
+        var cell = Сells[indexCell];
+
+        //Instantiate(_particleDestroyCell, new Vector3(cell.transform.position.x, cell.transform.position.y, -3), Quaternion.identity);
+
         yield return new WaitForSeconds(1);
-        Destroy(_cells[indexCell]);
+        Destroy(cell);
         yield break;
     }
 

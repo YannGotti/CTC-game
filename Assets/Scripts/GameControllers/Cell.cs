@@ -4,9 +4,10 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     [SerializeField] private GameObject _selectedCell;
-    [SerializeField] public int IndexInCellsArray;
+    public int IndexInCellsArray;
     private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight, _isMove;
-    private float _maxMoving = 0.7f, _maxMovingIfNotBorder = 0.1f;
+    private readonly float _maxMoving = 0.7f;
+    private readonly float _maxMovingIfNotBorder = 0.1f;
     private GameController _gameController;
     private Vector2 _lastPosition;
     private Transform _parent;

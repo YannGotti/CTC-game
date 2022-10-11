@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class SnakeController : MonoBehaviour
 {
-    [Header("Настройки змейки")]
+    [Header("Settings snake")]
     [SerializeField] private GameController _gameController;
     [SerializeField] private Sprite _colorSnake;
     [SerializeField] private int _lastPositionIndex = -1;
-
     [SerializeField] private int _currentPositionIndex;
+    [SerializeField] private float _cooldown;
+    private bool _cooldownMove = true;
 
-    [Header("Настройки анимации")]
+    [Header("Settings animation")]
     [SerializeField] private float _animationSpeed;
 
     private Transform _headTransform;
@@ -27,6 +28,10 @@ public class SnakeController : MonoBehaviour
 
     private void OnDownCell(GameObject obj, int index)
     {
+        if (!_cooldownMove) return;
+
+        StartCoroutine(CooldownMove());
+
         _currentPositionIndex = index;
 
         if (!_gameController.IsBorderCell(_lastPositionIndex, index)) return;
@@ -42,6 +47,8 @@ public class SnakeController : MonoBehaviour
 
         _lastPositionIndex = index;
         StartCoroutine(_gameController.DestroyCell(_lastPositionIndex));
+
+        _cooldownMove = false;
 
     }
 
@@ -159,6 +166,15 @@ public class SnakeController : MonoBehaviour
 
             yield return null;
         }
+
+        yield break;
+    }
+
+    IEnumerator CooldownMove()
+    {
+        yield return new WaitForSeconds(_cooldown);
+
+        _cooldownMove = true;
 
         yield break;
     }
