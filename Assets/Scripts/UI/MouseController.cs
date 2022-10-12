@@ -5,12 +5,10 @@ using UnityEngine;
 public class MouseController : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
-    private ParticleSystem.EmissionModule _em;
 
     void Start()
     {
         _particleSystem = GetComponent<ParticleSystem>();
-        _em = _particleSystem.emission;
     }
 
     void Update()
