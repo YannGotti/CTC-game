@@ -1,0 +1,12 @@
+Font: Amatic SC  Style: Regular
+Point Size: 84   SP/PD Ratio: 6,0%
+
+Characters included: 98/98
+Missing characters: 0
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+
+Characters excluded from packing:
+----------------------------------------
