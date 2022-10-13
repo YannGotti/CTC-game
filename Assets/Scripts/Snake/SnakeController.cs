@@ -9,14 +9,16 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private int _lastPositionIndex = -1;
     [SerializeField] private int _currentPositionIndex;
     [SerializeField] private float _cooldown;
-    private bool _cooldownMove = true;
 
     [Header("Settings animation")]
     [SerializeField] private float _animationSpeed;
 
+    private bool _cooldownMove = true;
+
     private Transform _headTransform;
     private Transform _bodyOneTransform;
     private Transform _bodyTwoTransform;
+
 
     private void Start()
     {
