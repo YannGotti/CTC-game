@@ -33,7 +33,8 @@ public class Cell : MonoBehaviour
     private void OnMouseDown()
     {
 
-        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
+        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
+            return;
 
         Cursor.visible = false;
         transform.SetParent(null);
@@ -47,7 +48,8 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
+        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
+            return;
 
         Cursor.visible = true;
         transform.position = _lastPosition;
@@ -88,22 +90,42 @@ public class Cell : MonoBehaviour
 
     private void MoveMouseCell()
     {
-        if (transform.position.x <= _lastPosition.x - _maxMoving) { transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y); _rotateSlide = 0; }
+        if (transform.position.x <= _lastPosition.x - _maxMoving)
+        {
+            transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
+            _rotateSlide = 0;
+        }
 
-        if (transform.position.x >= _lastPosition.x + _maxMoving) { transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y); _rotateSlide = 0; }
+        if (transform.position.x >= _lastPosition.x + _maxMoving) 
+        {
+            transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y);
+            _rotateSlide = 0;
+        }
 
-        if (transform.position.y >= _lastPosition.y + _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving); _rotateSlide = 1; }
+        if (transform.position.y >= _lastPosition.y + _maxMoving)
+        {
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving);
+            _rotateSlide = 1; 
+        }
 
-        if (transform.position.y <= _lastPosition.y - _maxMoving) { transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving); _rotateSlide = 1; }
+        if (transform.position.y <= _lastPosition.y - _maxMoving)
+        { 
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
+            _rotateSlide = 1; 
+        }
 
         
-        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
-        
-        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
-        
-        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
+        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
 
-        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder) transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
+        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
+        
+        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
+
+        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
+            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
     private bool IsMove()
