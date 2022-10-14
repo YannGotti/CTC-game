@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +7,14 @@ public class UIController : MonoBehaviour
     [Header("Fields")]
     [SerializeField] private Button _pauseButton;
     [SerializeField] private GameObject _pausePrefab;
+    [SerializeField] private AudioSource[] _allAudio;
+
+    [Header("Settings")]
     [SerializeField] private float _cooldown;
 
     private GameObject _currentPause;
+
+    private Slider _sliderAudio;
 
     private Transform _canvas;
 
@@ -51,7 +55,25 @@ public class UIController : MonoBehaviour
 
         _currentPause = Instantiate(_pausePrefab, _canvas);
 
+        _sliderAudio = _currentPause.GetComponentInChildren<Slider>();
+
+        _sliderAudio.onValueChanged.AddListener(SliderValue);
+
+        _sliderAudio.value = MiddleVolumeSound();
+
         yield break;
+    }
+
+    private float MiddleVolumeSound()
+    {
+        float middleVolume = 0;
+
+        foreach (var sound in _allAudio)
+            middleVolume += sound.volume;
+
+        middleVolume /= _allAudio.Length;
+
+        return middleVolume;
     }
 
     private IEnumerator ClosePauseUI()
@@ -60,6 +82,7 @@ public class UIController : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
+        _sliderAudio = null;
         if (_currentPause == null) yield break;
 
         Destroy(_currentPause);
@@ -82,6 +105,11 @@ public class UIController : MonoBehaviour
         //Debug.Log("Комбо");
     }
 
+    public void SliderValue(float value)
+    {
+        foreach (var sound in _allAudio)
+            sound.volume = value;
+    }
     
 
 
