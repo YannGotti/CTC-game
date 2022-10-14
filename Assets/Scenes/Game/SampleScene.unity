@@ -1504,9 +1504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseButton: {fileID: 1164574112}
   _pausePrefab: {fileID: 6182817934065203040, guid: e87c9042f019cbe41add14909cdb4542, type: 3}
-  _isPause: 0
-  _cooldown: 0.2
-  _timeCooldown: 1
+  _cooldown: 0.1
 --- !u!1 &1747819622
 GameObject:
   m_ObjectHideFlags: 0
