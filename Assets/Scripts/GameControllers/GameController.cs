@@ -280,7 +280,7 @@ public class GameController : MonoBehaviour
         if (_steps == 0) EventContoller.singleton.OnGameOver.Invoke();
     }
 
-    private void GameOver() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
+    public void GameOver() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    public void MenuOpen() => SceneManager.LoadScene(0);
     #endregion
 }
