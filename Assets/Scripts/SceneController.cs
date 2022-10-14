@@ -22,6 +22,11 @@ public class SceneController : MonoBehaviour
 
     public void OpenDashboard()
     {
-        //SceneManager.LoadScene(0);
+        SceneManager.LoadScene(0);
+    }
+
+    public void OpenLastScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }
