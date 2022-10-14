@@ -749,7 +749,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 747873066}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1701564542}
+        m_TargetAssemblyTypeName: NetWorkController, Assembly-CSharp
+        m_MethodName: OpenTelegram
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &747873066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,7 +1503,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1266189913}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1701564542}
+        m_TargetAssemblyTypeName: NetWorkController, Assembly-CSharp
+        m_MethodName: OpenDiscord
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1266189913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1612,7 +1636,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1324022166}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1701564542}
+        m_TargetAssemblyTypeName: NetWorkController, Assembly-CSharp
+        m_MethodName: OpenGitHub
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1324022166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2066,7 +2102,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1634163126}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1701564541}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+        m_MethodName: OpenDashboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1634163126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2250,6 +2298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701564540}
   - component: {fileID: 1701564541}
+  - component: {fileID: 1701564542}
   m_Layer: 0
   m_Name: ChangeScene
   m_TagString: Untagged
@@ -2282,6 +2331,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ad64d614839cf544ab435d6e1adb6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1701564542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701564539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e668660670f1ce3459a66c51f7e21f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1942580378
