@@ -41,5 +41,7 @@ public class SceneLoadedManager : MonoBehaviour
 
             yield return null; 
         }
+
+        yield break;
     }
 }

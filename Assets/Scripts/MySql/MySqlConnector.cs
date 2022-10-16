@@ -3,10 +3,20 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using static UnityEditor.Progress;
 
 public class MySqlConnector : MonoBehaviour
 {
-    private MySqlConnection _connector;
+    public MySqlConnection _connector;
+    private string _temp;
+
+    private void Awake() => IsSQLConnection();
+
+    private void OnApplicationQuit()
+    {
+        _connector.Close();
+        Debug.Log("Подключение к бд успешно закрыто!");
+    } 
 
     private MySqlConnection GetDBConnection()
     {
@@ -21,8 +31,6 @@ public class MySqlConnector : MonoBehaviour
 
     public List<string> SelectUsersLeaders()
     {
-        if (!IsSQLConnection()) return null;
-
         string sql = "SELECT * FROM `users` LIMIT 5";
         MySqlCommand cmd = new(sql, _connector);
         MySqlDataReader rdr = cmd.ExecuteReader();
@@ -33,16 +41,15 @@ public class MySqlConnector : MonoBehaviour
             data.Add(rdr.GetString(i));
 
         rdr.Close();
-        _connector.Close();
 
         return data;
     }
 
-    private void InsertUserData(string username)
+    public void InsertUserData(string username)
     {
-        if (!IsSQLConnection()) return;
+        if (IsUserCreated(username)) return;
 
-        string macAdress = SelectLocalMacAdress();
+        var macAdress = SelectLocalMacAdress();
 
         if (macAdress == null)
         {
@@ -50,13 +57,72 @@ public class MySqlConnector : MonoBehaviour
             return;
         }
 
-        string sql = $"INSERT INTO `users` (`username`, `mac-address`) VALUES ({username}, {macAdress});";
+        string sql = $"INSERT INTO `users` (`username`, `mac_address`) VALUES ('{username}', '{macAdress}');";
         MySqlCommand cmd = new(sql, _connector);
         cmd.ExecuteNonQuery();
-        _connector.Close();
     }
 
-    private string SelectLocalMacAdress()
+    public bool IsMacAdress(string username, string macAddress)
+    {
+        if (!IsUserCreated(username)) return true;
+
+        string sql = $"SELECT COUNT(1) FROM users WHERE username = '{username}' AND mac_address = '{macAddress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read() && rdr.GetInt32(0) != 0)
+        {
+            rdr.Close();
+            return true;
+        }
+
+        rdr.Close();
+
+        return false;
+    }
+
+    public bool IsUserCreated(string username)
+    {
+        string sql = $"SELECT COUNT(1) FROM users WHERE username = '{username}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read() && rdr.GetInt32(0) != 0)
+        {
+            rdr.Close();
+            return true;
+        }
+
+        rdr.Close();
+
+
+        return false;
+    }
+
+    private bool IsSQLConnection()
+    {
+        try
+        {
+            if (_temp == "Open") return true;
+
+            _connector = GetDBConnection();
+            _connector.Open();
+
+            _temp = _connector.State.ToString();
+
+            Debug.Log("Есть подключение к базе данных!");
+            
+            return true;
+        }
+        catch (Exception)
+        {
+            Debug.LogError("Нет подключения к базе данных!");
+            _connector = null;
+            return false;
+        }
+    }
+
+    public string SelectLocalMacAdress()
     {
         NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
         foreach (NetworkInterface adapter in nics)
@@ -68,24 +134,4 @@ public class MySqlConnector : MonoBehaviour
         return null;
     }
 
-    private bool IsSQLConnection()
-    {
-        try
-        {
-            _connector = GetDBConnection();
-            _connector.Open();
-            Debug.Log("Успешное подключение к базе данных!");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Нет подключения к базе данных!");
-            Debug.LogError(e.StackTrace);
-            _connector = null;
-            return false;
-        }
-    }
-
-    
-    
 }

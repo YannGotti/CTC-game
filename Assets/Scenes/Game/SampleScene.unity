@@ -1788,7 +1788,8 @@ PrefabInstance:
       propertyPath: _textComponent
       value: 
       objectReference: {fileID: 386456156}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4544394357904516205, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
 --- !u!114 &511983410268809858 stripped
 MonoBehaviour:
