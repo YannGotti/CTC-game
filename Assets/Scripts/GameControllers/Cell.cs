@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class Cell : MonoBehaviour
 {
     [SerializeField] private GameObject _selectedCell;

@@ -2,6 +2,7 @@ using UnityEngine;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 public class MySqlConnector : MonoBehaviour
 {
@@ -37,6 +38,35 @@ public class MySqlConnector : MonoBehaviour
         return data;
     }
 
+    private void InsertUserData(string username)
+    {
+        if (!IsSQLConnection()) return;
+
+        string macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return;
+        }
+
+        string sql = $"INSERT INTO `users` (`username`, `mac-address`) VALUES ({username}, {macAdress});";
+        MySqlCommand cmd = new(sql, _connector);
+        cmd.ExecuteNonQuery();
+        _connector.Close();
+    }
+
+    private string SelectLocalMacAdress()
+    {
+        NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+        foreach (NetworkInterface adapter in nics)
+        {
+            PhysicalAddress address = adapter.GetPhysicalAddress();
+            if (address.ToString() != "") return address.ToString();
+        }
+
+        return null;
+    }
 
     private bool IsSQLConnection()
     {
@@ -55,5 +85,7 @@ public class MySqlConnector : MonoBehaviour
             return false;
         }
     }
+
+    
     
 }
