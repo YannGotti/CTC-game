@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using static UnityEditor.Progress;
+using System.Net.Mail;
 
 public class MySqlConnector : MonoBehaviour
 {
@@ -61,6 +62,43 @@ public class MySqlConnector : MonoBehaviour
         MySqlCommand cmd = new(sql, _connector);
         cmd.ExecuteNonQuery();
     }
+
+    public void UpdateMoneyUser(int money)
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return;
+        }
+
+        int currentMoney = SelectMoney(macAdress);
+
+        int updateMoney = currentMoney + money;
+
+        string sql = $"UPDATE `users` SET `money`= {updateMoney} WHERE mac_address ='{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        cmd.ExecuteNonQuery();
+    }
+
+    private int SelectMoney(string macAdress)
+    {
+        string sql = $"SELECT `money` FROM `users` WHERE mac_address = '{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            int count = rdr.GetInt32("money");
+            rdr.Close();
+            return count;
+        }
+        rdr.Close();
+
+        return 0;
+    }
+
 
     public bool IsMacAdress(string username, string macAddress)
     {

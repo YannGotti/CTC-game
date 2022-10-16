@@ -8,13 +8,11 @@ using Random = UnityEngine.Random;
 public class GameController : MonoBehaviour
 {
     #region Fields
-
-    private readonly float _width = 3;
-    private readonly float _height = 2;
+    
     [Header("Settings cells")]
+    [SerializeField] private GameObject _cellPrefab;
     public List<GameObject> Сells;
     public List<Sprite> Colors;
-    [SerializeField] private GameObject _cellPrefab;
 
     [Header("Colors cells")]
     [SerializeField] private Sprite _blueCell;
@@ -29,10 +27,24 @@ public class GameController : MonoBehaviour
     [SerializeField] private Text _textComponent;
     [SerializeField] private int _steps;
     [SerializeField] private int _stepsSnake;
-    private int _indexSelectedCell;
+    [SerializeField] private bool _gameStarted;
 
     [Header("Settings sounds")]
     [SerializeField] private AudioSource _audioSource;
+
+    [Header("Settings score")]
+    [SerializeField] private float _maxMoneyDrop;
+    [SerializeField] private float _maxStep;
+    [SerializeField] private float _maxTime;
+
+    private readonly float _width = 3;
+    private readonly float _height = 2;
+
+    private int _indexSelectedCell;
+
+    private MySqlConnector _mySqlConnector;
+    private float _timeGame;
+    private float _stepCount;
 
     //[Header("Settings particles")]
     //[SerializeField] private GameObject _particleDestroyCell;
@@ -44,10 +56,18 @@ public class GameController : MonoBehaviour
         FindPath(null);
         _textComponent.text = $"{_steps}";
 
+        _mySqlConnector = GetComponent<MySqlConnector>();
         EventContoller.singleton.OnSlideCell.AddListener(LostStep);
+        EventContoller.singleton.StartGame.AddListener(StartGame);
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
+        EventContoller.singleton.OnGameOver.AddListener(MathScore);
         EventContoller.singleton.AnimationSlideCell.AddListener(AnimationSlideCell);
+    }
+
+    private void FixedUpdate()
+    {
+        if (_gameStarted) _timeGame += Time.fixedDeltaTime;
     }
 
     #region Grid
@@ -122,6 +142,8 @@ public class GameController : MonoBehaviour
 
         Colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
         Colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+
+        EventContoller.singleton.StartGame.Invoke();
 
         StartCoroutine(SlideCell(owner, target, lastPosition, rotateSlide));
     }
@@ -275,12 +297,35 @@ public class GameController : MonoBehaviour
     #region GameOver
     private void LostStep(GameObject obj)
     {
+        _stepCount++;
         _textComponent.text = $"{_steps -= 1}";
 
         if (_steps == 0) EventContoller.singleton.OnGameOver.Invoke();
     }
 
-    public void GameOver() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    private void StartGame()
+    {
+        if (_gameStarted) return;
+
+        _gameStarted = true;
+    }
+
+    public void GameOver()
+    {
+        _gameStarted = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void MathScore()
+    {
+        float percentSteps = (_stepCount / _maxStep) * 50;
+        float percentTime = (_timeGame / _maxTime) * 50;
+
+        float moneyDrop = (((50 - percentSteps) + (50 - percentTime)) * _maxMoneyDrop) / 100;
+
+        _mySqlConnector.UpdateMoneyUser((int)moneyDrop);
+    }
+
     public void MenuOpen() => SceneManager.LoadScene(0);
     #endregion
 }

@@ -19,4 +19,5 @@ public class EventContoller : MonoBehaviour
 
     public UnityEvent OnComboCell = new UnityEvent();
 
+    public UnityEvent StartGame = new UnityEvent();
 }

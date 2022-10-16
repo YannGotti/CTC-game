@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 511983409721818922}
   - component: {fileID: 5889903439337634187}
-  - component: {fileID: 4544394357904516205}
   - component: {fileID: 3937362771660676439}
+  - component: {fileID: 8416733904752822945}
+  - component: {fileID: 7284971012661957228}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -46,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1330ed15284f82442b255886ed69a7ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cellPrefab: {fileID: 6660057376963212470, guid: 1825ac5d172e3a3448cb6ad897fdf37e, type: 3}
   "\u0421ells": []
   Colors: []
-  _cellPrefab: {fileID: 6660057376963212470, guid: 1825ac5d172e3a3448cb6ad897fdf37e, type: 3}
   _blueCell: {fileID: 21300000, guid: f465e95ee57a8d94a910146a03b07a94, type: 3}
   _redCell: {fileID: 21300000, guid: 4eaa905b33297344a9bb472bea6e2441, type: 3}
   _greenCell: {fileID: 21300000, guid: 530fcc583476bef4cbd5b86fecfca795, type: 3}
@@ -58,19 +59,11 @@ MonoBehaviour:
   _textComponent: {fileID: 0}
   _steps: 99
   _stepsSnake: 0
+  _gameStarted: 0
   _audioSource: {fileID: 3937362771660676439}
---- !u!114 &4544394357904516205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 511983409721818921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 089182dac190b67409534c8f6a3028b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _maxMoneyDrop: 50
+  _maxStep: 60
+  _maxTime: 300
 --- !u!82 &3937362771660676439
 AudioSource:
   m_ObjectHideFlags: 0
@@ -167,3 +160,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8416733904752822945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511983409721818921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad64d614839cf544ab435d6e1adb6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7284971012661957228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511983409721818921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 089182dac190b67409534c8f6a3028b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

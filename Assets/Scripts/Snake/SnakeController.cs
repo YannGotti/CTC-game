@@ -47,6 +47,8 @@ public class SnakeController : MonoBehaviour
         Move(side);
         StartCoroutine(MoveSnakeBody());
 
+        EventContoller.singleton.StartGame.Invoke();
+
         _lastPositionIndex = index;
         StartCoroutine(_gameController.DestroyCell(_lastPositionIndex));
 
