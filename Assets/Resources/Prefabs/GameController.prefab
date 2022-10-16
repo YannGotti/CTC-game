@@ -61,9 +61,10 @@ MonoBehaviour:
   _stepsSnake: 0
   _gameStarted: 0
   _audioSource: {fileID: 3937362771660676439}
-  _maxMoneyDrop: 50
+  _maxMoneyDrop: 20
+  _maxScoreDrop: 100
   _maxStep: 60
-  _maxTime: 300
+  _maxTime: 60
 --- !u!82 &3937362771660676439
 AudioSource:
   m_ObjectHideFlags: 0

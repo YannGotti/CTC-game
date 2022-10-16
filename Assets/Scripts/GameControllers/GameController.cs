@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
 
     [Header("Settings score")]
     [SerializeField] private float _maxMoneyDrop;
+    [SerializeField] private float _maxScoreDrop;
     [SerializeField] private float _maxStep;
     [SerializeField] private float _maxTime;
 
@@ -61,7 +62,7 @@ public class GameController : MonoBehaviour
         EventContoller.singleton.StartGame.AddListener(StartGame);
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
-        EventContoller.singleton.OnGameOver.AddListener(MathScore);
+        EventContoller.singleton.OnGameOver.AddListener(MathMoneyAndScore);
         EventContoller.singleton.AnimationSlideCell.AddListener(AnimationSlideCell);
     }
 
@@ -316,14 +317,26 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void MathScore()
+    private void MathMoneyAndScore()
     {
         float percentSteps = (_stepCount / _maxStep) * 50;
         float percentTime = (_timeGame / _maxTime) * 50;
 
+        MathMoney(percentSteps, percentTime);
+        MathScore(percentSteps, percentTime);
+    }
+
+    private void MathMoney(float percentSteps, float percentTime)
+    {
         float moneyDrop = (((50 - percentSteps) + (50 - percentTime)) * _maxMoneyDrop) / 100;
 
         _mySqlConnector.UpdateMoneyUser((int)moneyDrop);
+    }
+
+    private void MathScore(float percentSteps, float percentTime)
+    {
+        float moneyScore = (((50 - percentSteps) + (50 - percentTime)) * _maxScoreDrop) / 100;
+        _mySqlConnector.UpdateScoreUser((int)moneyScore);
     }
 
     public void MenuOpen() => SceneManager.LoadScene(0);

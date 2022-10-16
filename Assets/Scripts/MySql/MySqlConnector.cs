@@ -73,7 +73,7 @@ public class MySqlConnector : MonoBehaviour
             return;
         }
 
-        int currentMoney = SelectMoney(macAdress);
+        int currentMoney = SelectMoney();
 
         int updateMoney = currentMoney + money;
 
@@ -82,8 +82,16 @@ public class MySqlConnector : MonoBehaviour
         cmd.ExecuteNonQuery();
     }
 
-    private int SelectMoney(string macAdress)
+    private int SelectMoney()
     {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return 0;
+        }
+
         string sql = $"SELECT `money` FROM `users` WHERE mac_address = '{macAdress}'";
         MySqlCommand cmd = new(sql, _connector);
         MySqlDataReader rdr = cmd.ExecuteReader();
@@ -98,6 +106,52 @@ public class MySqlConnector : MonoBehaviour
 
         return 0;
     }
+
+    public void UpdateScoreUser(int score)
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return;
+        }
+
+        int currentScore = SelectScore();
+
+        int updateScore = currentScore + score;
+
+        string sql = $"UPDATE `users` SET `score`= {updateScore} WHERE mac_address ='{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        cmd.ExecuteNonQuery();
+    }
+
+    private int SelectScore()
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return 0;
+        }
+
+        string sql = $"SELECT `score` FROM `users` WHERE mac_address = '{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            int count = rdr.GetInt32("score");
+            rdr.Close();
+            return count;
+        }
+        rdr.Close();
+
+        return 0;
+    }
+
+
 
 
     public bool IsMacAdress(string username, string macAddress)
