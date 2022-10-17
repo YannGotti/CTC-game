@@ -119,15 +119,22 @@ public class MySqlConnector : MonoBehaviour
 
         string sql = String.Empty;
 
+        if (currentSteps == 0 && currentTime == 0)
+        {
+            sql = $"INSERT INTO `users` (`count-step`, `time`) VALUES ('{steps}', '{time}');";
+        }
+
         if (steps < currentSteps)
         {
             sql = $"UPDATE `users` SET `count-steps`= {steps} WHERE mac_address ='{macAdress}'";
         }
 
-        if (time < currentTime)
+        else if (time < currentTime)
         {
             sql = $"UPDATE `users` SET `time`= {time} WHERE mac_address ='{macAdress}'";
-        }
+        } 
+
+        if (sql == null) return;
 
         MySqlCommand cmd = new(sql, _connector);
 
