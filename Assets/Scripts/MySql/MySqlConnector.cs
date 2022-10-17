@@ -121,7 +121,7 @@ public class MySqlConnector : MonoBehaviour
 
         if (currentSteps == 0 || currentTime == 0)
         {
-            sql = $"INSERT INTO `users` (`count_step`, `time`) VALUES ('{steps}', '{time}');";
+            sql = $"INSERT INTO `users` (`count_step`, `time`) VALUES ('{steps}', '{time}') WHERE mac_address ='{macAdress}';";
         }
 
         if (steps < currentSteps && time < currentTime)
