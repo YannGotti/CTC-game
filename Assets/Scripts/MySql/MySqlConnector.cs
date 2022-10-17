@@ -32,14 +32,13 @@ public class MySqlConnector : MonoBehaviour
 
     public List<string> SelectUsersLeaders()
     {
-        string sql = "SELECT * FROM `users` LIMIT 5";
+        string sql = "SELECT `username`, `score`, `count_step`, `time` FROM `users` LIMIT 5";
         MySqlCommand cmd = new(sql, _connector);
         MySqlDataReader rdr = cmd.ExecuteReader();
 
         List<string> data = new();
 
-        for (int i = 0; rdr.Read(); i++)
-            data.Add(rdr.GetString(i));
+        while (rdr.Read()) for (int i = 0; i < rdr.FieldCount; i++) data.Add(rdr[i].ToString());
 
         rdr.Close();
 
