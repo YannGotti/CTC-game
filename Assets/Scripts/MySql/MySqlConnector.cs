@@ -117,22 +117,28 @@ public class MySqlConnector : MonoBehaviour
 
         int currentTime = SelectTime();
 
-        string sql = String.Empty;
+        string sql = $"SELECT 1";
 
-        if (currentSteps == 0 && currentTime == 0)
+        if (currentSteps == 0 || currentTime == 0)
         {
-            sql = $"INSERT INTO `users` (`count-step`, `time`) VALUES ('{steps}', '{time}');";
+            sql = $"INSERT INTO `users` (`count_step`, `time`) VALUES ('{steps}', '{time}');";
         }
 
-        if (steps < currentSteps)
+        if (steps < currentSteps && time < currentTime)
         {
-            sql = $"UPDATE `users` SET `count-steps`= {steps} WHERE mac_address ='{macAdress}'";
+            sql = $"UPDATE `users` SET `count_step`= {steps}, `time`= {time} WHERE mac_address ='{macAdress}'";
+        }
+
+        else if (steps < currentSteps)
+        {
+            sql = $"UPDATE `users` SET `count_step`= {steps} WHERE mac_address ='{macAdress}'";
         }
 
         else if (time < currentTime)
         {
             sql = $"UPDATE `users` SET `time`= {time} WHERE mac_address ='{macAdress}'";
         } 
+
 
         if (sql == null) return;
 
@@ -176,13 +182,13 @@ public class MySqlConnector : MonoBehaviour
             return 0;
         }
 
-        string sql = $"SELECT `count-step` FROM `users` WHERE mac_address = '{macAdress}'";
+        string sql = $"SELECT `count_step` FROM `users` WHERE mac_address = '{macAdress}'";
         MySqlCommand cmd = new(sql, _connector);
         MySqlDataReader rdr = cmd.ExecuteReader();
 
         if (rdr.Read())
         {
-            int count = rdr.GetInt32("count-step");
+            int count = rdr.GetInt32("count_step");
             rdr.Close();
             return count;
         }

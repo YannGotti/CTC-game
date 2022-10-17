@@ -118,7 +118,7 @@ public class SnakeController : MonoBehaviour
             yield return null;
         }
 
-        if (CanExit()) EventContoller.singleton.OnGameOver.Invoke(); // Конец игры Победа
+        if (_gameController.IsLastCell(_lastPositionIndex)) EventContoller.singleton.OnGameOver.Invoke(); // Конец игры Победа
 
         yield break;
     }
@@ -181,14 +181,5 @@ public class SnakeController : MonoBehaviour
         _cooldownMove = true;
 
         yield break;
-    }
-
-    private bool CanExit()
-    {
-        Vector3 position = _headTransform.position;
-
-        if (position.x > 1.8f && position.x < 2.2f && position.y < 2 && position.y > 1.5f) return true;
-
-        return false;
     }
 }

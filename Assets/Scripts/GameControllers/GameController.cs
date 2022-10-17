@@ -238,7 +238,7 @@ public class GameController : MonoBehaviour
     {
         _indexSelectedCell = index;
 
-        if (_stepsSnake == 0 && _indexSelectedCell == 9)
+        if (_stepsSnake == 0 && _indexSelectedCell == 0)
         {
             _stepsSnake++;
             return true;
@@ -301,6 +301,13 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1);
         Destroy(cell);
         yield break;
+    }
+
+    public bool IsLastCell(int currentPosition)
+    {
+        if (currentPosition + 1 == Сells.Count) return true;
+
+        return false;
     }
 
     #endregion
