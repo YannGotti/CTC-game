@@ -841,9 +841,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: GameOver
+      - m_Target: {fileID: 8416733904752822945, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+        m_MethodName: OpenGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -975,9 +975,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: MenuOpen
+      - m_Target: {fileID: 8416733904752822945, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+        m_MethodName: OpenMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

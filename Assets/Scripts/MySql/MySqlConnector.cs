@@ -198,6 +198,9 @@ public class MySqlConnector : MonoBehaviour
             if (_temp == "Open") return true;
 
             _connector = GetDBConnection();
+
+            if (_connector.State == System.Data.ConnectionState.Open) return true;
+
             _connector.Open();
 
             _temp = _connector.State.ToString();

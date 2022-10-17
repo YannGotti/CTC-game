@@ -38,14 +38,24 @@ public class GameController : MonoBehaviour
     [SerializeField] private float _maxStep;
     [SerializeField] private float _maxTime;
 
+    [Header("Settings stats panel")]
+    [SerializeField] private GameObject _statsPanel;
+    [SerializeField] private TMPro.TMP_Text _moneyStatText;
+    [SerializeField] private TMPro.TMP_Text _stepsStatText;
+    [SerializeField] private TMPro.TMP_Text _timeStatText;
+
+
     private readonly float _width = 3;
     private readonly float _height = 2;
 
     private int _indexSelectedCell;
 
+
     private MySqlConnector _mySqlConnector;
     private float _timeGame;
     private float _stepCount;
+    private int _moneyDrop;
+
 
     //[Header("Settings particles")]
     //[SerializeField] private GameObject _particleDestroyCell;
@@ -61,8 +71,8 @@ public class GameController : MonoBehaviour
         EventContoller.singleton.OnSlideCell.AddListener(LostStep);
         EventContoller.singleton.StartGame.AddListener(StartGame);
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
-        EventContoller.singleton.OnGameOver.AddListener(GameOver);
         EventContoller.singleton.OnGameOver.AddListener(MathMoneyAndScore);
+        EventContoller.singleton.OnGameOver.AddListener(GameOver);
         EventContoller.singleton.AnimationSlideCell.AddListener(AnimationSlideCell);
     }
 
@@ -304,18 +314,14 @@ public class GameController : MonoBehaviour
         if (_steps == 0) EventContoller.singleton.OnGameOver.Invoke();
     }
 
-    private void StartGame()
+    public void StatsEnable()
     {
-        if (_gameStarted) return;
-
-        _gameStarted = true;
-    }
-
-    public void GameOver()
-    {
-        _gameStarted = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+        _moneyStatText.text = $"Получено {(int)_moneyDrop} монет!";
+        _stepsStatText.text = $"Пройдено за  {(int)_stepCount} шагов!";
+        _timeStatText.text = $"Пройдено за  {(int)_timeGame} секунд!";
+        _statsPanel.SetActive(true);
+    } 
+    public void StatsDisable() => _statsPanel.SetActive(false);
 
     private void MathMoneyAndScore()
     {
@@ -328,15 +334,33 @@ public class GameController : MonoBehaviour
 
     private void MathMoney(float percentSteps, float percentTime)
     {
-        float moneyDrop = (((50 - percentSteps) + (50 - percentTime)) * _maxMoneyDrop) / 100;
+        float moneyDrop =  (((50 - percentSteps) + (50 - percentTime)) * _maxMoneyDrop) / 100;
 
-        _mySqlConnector.UpdateMoneyUser((int)moneyDrop);
+        _mySqlConnector.UpdateMoneyUser(_moneyDrop = (int)moneyDrop);
     }
 
     private void MathScore(float percentSteps, float percentTime)
     {
-        float moneyScore = (((50 - percentSteps) + (50 - percentTime)) * _maxScoreDrop) / 100;
-        _mySqlConnector.UpdateScoreUser((int)moneyScore);
+        float score =  (((50 - percentSteps) + (50 - percentTime)) * _maxScoreDrop) / 100;
+        _mySqlConnector.UpdateScoreUser((int)score);
+    }
+
+    private void StartGame()
+    {
+        if (_gameStarted) return;
+
+        _gameStarted = true;
+    }
+
+    private void GameOver()
+    {
+        _gameStarted = false;
+        StatsEnable();
+    }
+
+    public void GameReload()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void MenuOpen() => SceneManager.LoadScene(0);
