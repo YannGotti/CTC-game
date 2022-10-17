@@ -330,6 +330,7 @@ public class GameController : MonoBehaviour
 
         MathMoney(percentSteps, percentTime);
         MathScore(percentSteps, percentTime);
+        _mySqlConnector.UpdateStepsAndTimeUser((int)_stepCount, (int)_timeGame);
     }
 
     private void MathMoney(float percentSteps, float percentTime)

@@ -63,6 +63,8 @@ public class MySqlConnector : MonoBehaviour
         cmd.ExecuteNonQuery();
     }
 
+
+
     public void UpdateMoneyUser(int money)
     {
         var macAdress = SelectLocalMacAdress();
@@ -82,31 +84,6 @@ public class MySqlConnector : MonoBehaviour
         cmd.ExecuteNonQuery();
     }
 
-    private int SelectMoney()
-    {
-        var macAdress = SelectLocalMacAdress();
-
-        if (macAdress == null)
-        {
-            Debug.LogError("Мак Адрес не получен");
-            return 0;
-        }
-
-        string sql = $"SELECT `money` FROM `users` WHERE mac_address = '{macAdress}'";
-        MySqlCommand cmd = new(sql, _connector);
-        MySqlDataReader rdr = cmd.ExecuteReader();
-
-        if (rdr.Read())
-        {
-            int count = rdr.GetInt32("money");
-            rdr.Close();
-            return count;
-        }
-        rdr.Close();
-
-        return 0;
-    }
-
     public void UpdateScoreUser(int score)
     {
         var macAdress = SelectLocalMacAdress();
@@ -123,6 +100,37 @@ public class MySqlConnector : MonoBehaviour
 
         string sql = $"UPDATE `users` SET `score`= {updateScore} WHERE mac_address ='{macAdress}'";
         MySqlCommand cmd = new(sql, _connector);
+        cmd.ExecuteNonQuery();
+    }
+
+    public void UpdateStepsAndTimeUser(int steps, int time)
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return;
+        }
+
+        int currentSteps = SelectSteps();
+
+        int currentTime = SelectTime();
+
+        string sql = String.Empty;
+
+        if (steps < currentSteps)
+        {
+            sql = $"UPDATE `users` SET `count-steps`= {steps} WHERE mac_address ='{macAdress}'";
+        }
+
+        if (time < currentTime)
+        {
+            sql = $"UPDATE `users` SET `time`= {time} WHERE mac_address ='{macAdress}'";
+        }
+
+        MySqlCommand cmd = new(sql, _connector);
+
         cmd.ExecuteNonQuery();
     }
 
@@ -151,7 +159,80 @@ public class MySqlConnector : MonoBehaviour
         return 0;
     }
 
+    private int SelectSteps()
+    {
+        var macAdress = SelectLocalMacAdress();
 
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return 0;
+        }
+
+        string sql = $"SELECT `count-step` FROM `users` WHERE mac_address = '{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            int count = rdr.GetInt32("count-step");
+            rdr.Close();
+            return count;
+        }
+        rdr.Close();
+
+        return 0;
+    }
+
+    private int SelectTime()
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return 0;
+        }
+
+        string sql = $"SELECT `time` FROM `users` WHERE mac_address = '{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            int count = rdr.GetInt32("time");
+            rdr.Close();
+            return count;
+        }
+        rdr.Close();
+
+        return 0;
+    }
+
+    private int SelectMoney()
+    {
+        var macAdress = SelectLocalMacAdress();
+
+        if (macAdress == null)
+        {
+            Debug.LogError("Мак Адрес не получен");
+            return 0;
+        }
+
+        string sql = $"SELECT `money` FROM `users` WHERE mac_address = '{macAdress}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            int count = rdr.GetInt32("money");
+            rdr.Close();
+            return count;
+        }
+        rdr.Close();
+
+        return 0;
+    }
 
 
     public bool IsMacAdress(string username, string macAddress)
