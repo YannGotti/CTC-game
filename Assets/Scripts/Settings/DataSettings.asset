@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e43f3ae36cb6246bb7e0a0a4ab1b69, type: 3}
   m_Name: DataSettings
   m_EditorClassIdentifier: 
-  FullscreenMode: 0
+  FullscreenMode: 1
   Bloom: 0
   VignetteEffect: 0

@@ -320,7 +320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &53950383
 RectTransform:
   m_ObjectHideFlags: 0
@@ -582,7 +582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &139533382
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1137,7 +1137,6 @@ GameObject:
   - component: {fileID: 255428852}
   - component: {fileID: 255428853}
   - component: {fileID: 255428856}
-  - component: {fileID: 255428855}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1223,23 +1222,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &255428855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 255428851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: a231bc2d5b18cdb49a3ff430dc456124, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!114 &255428856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4942,8 +4924,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2135988313}
-        m_TargetAssemblyTypeName: VideoSettingsController, Assembly-CSharp
-        m_MethodName: OnVignetteEffectMode
+        m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
+        m_MethodName: OnVignetteMode
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5329,8 +5311,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2135988313}
-        m_TargetAssemblyTypeName: VideoSettingsController, Assembly-CSharp
-        m_MethodName: OnFullScreenMode
+        m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
+        m_MethodName: OnFullscreenMode
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6909,8 +6891,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2135988313}
-        m_TargetAssemblyTypeName: VideoSettingsController, Assembly-CSharp
-        m_MethodName: OnBloomMode
+        m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
+        m_MethodName: OnBloom
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7791,6 +7773,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2135988312}
   - component: {fileID: 2135988313}
+  - component: {fileID: 2135988314}
   m_Layer: 0
   m_Name: --SETTINGS-CONTROLLER--
   m_TagString: Untagged
@@ -7822,9 +7805,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 2135988311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9185c30db27b06943a50957068886b52, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d78fcca70506244986d44c00d0312fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
+  _toggleFullscreen: {fileID: 1310638884}
+  _toggleBloom: {fileID: 1937860909}
+  _toggleVignette: {fileID: 1225274142}
+  _postProcessVolume: {fileID: 0}
+  _bloom: {fileID: 0}
+  _vignette: {fileID: 0}
+--- !u!114 &2135988314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135988311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: a231bc2d5b18cdb49a3ff430dc456124, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0
 --- !u!1001 &2052420369736656992
 PrefabInstance:
   m_ObjectHideFlags: 0
