@@ -295,8 +295,8 @@ MonoBehaviour:
     \u043C\u044B\u0448\u0438 \u043F\u043E \u043A\u0443\u0431\u0438\u043A\u0443 \u043D\u0430
     \u043A\u043E\u0442\u0440\u044B\u0439 \u0445\u043E\u0442\u0438\u0442\u0435 \u043F\u043E\u0445\u043E\u0434\u0438\u0442\u044C!!!"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5f73945596bf45d46b1debaaee52447c, type: 2}
-  m_sharedMaterial: {fileID: -5330894680835646308, guid: 5f73945596bf45d46b1debaaee52447c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: aa7c1c5d4274fb74c815f8a32d4dbeec, type: 2}
+  m_sharedMaterial: {fileID: -8105931093546948534, guid: aa7c1c5d4274fb74c815f8a32d4dbeec, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -359,7 +359,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &67271623
