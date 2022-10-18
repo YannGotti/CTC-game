@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DataSettings
   m_EditorClassIdentifier: 
   FullscreenMode: 1
-  Bloom: 0
-  VignetteEffect: 0
+  Bloom: 1
+  VignetteEffect: 1
