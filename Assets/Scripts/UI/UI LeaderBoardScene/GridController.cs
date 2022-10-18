@@ -13,6 +13,8 @@ public class GridController : MonoBehaviour
 
         dataUsers = SelectUserData();
 
+        if (dataUsers == null) return;
+
         InsertDataUserInGrid();
     }
 
@@ -40,6 +42,8 @@ public class GridController : MonoBehaviour
     private List<List<string>> SelectUserData()
     {
         var data = _connector.SelectUsersLeaders();
+
+        if (data.Count == 0) return null;
 
         var tempList = new List<string>();
 

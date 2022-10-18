@@ -344,12 +344,18 @@ public class GameController : MonoBehaviour
     {
         float moneyDrop =  (((50 - percentSteps) + (50 - percentTime)) * _maxMoneyDrop) / 100;
 
+        if (moneyDrop <= 0) moneyDrop = 0;
+
         _mySqlConnector.UpdateMoneyUser(_moneyDrop = (int)moneyDrop);
     }
 
     private void MathScore(float percentSteps, float percentTime)
     {
         float score =  (((50 - percentSteps) + (50 - percentTime)) * _maxScoreDrop) / 100;
+
+        if (score <= 0) score = 0;
+
+
         _mySqlConnector.UpdateScoreUser((int)score);
     }
 
