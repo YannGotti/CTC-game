@@ -299,7 +299,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 16246947}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: Exit
+        m_MethodName: OpenMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
