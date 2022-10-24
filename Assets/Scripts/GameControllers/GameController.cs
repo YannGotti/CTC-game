@@ -3,25 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
 {
     #region Fields
     
     [Header("Settings cells")]
-    [SerializeField] private GameObject _cellPrefab;
-    public List<GameObject> Сells;
+    public List<GameObject> Cells;
     public List<Sprite> Colors;
+    private static float _animationSpeedSecond = 0.2f;
 
-    [Header("Colors cells")]
-    [SerializeField] private Sprite _blueCell;
-    [SerializeField] private Sprite _redCell;
-    [SerializeField] private Sprite _greenCell;
-    [SerializeField] private Sprite _purpleCell;
-    [SerializeField] private Sprite _comboCell;
-
-    [SerializeField] private float _animationSpeedSecond;
 
     [Header("Settings game")]
     [SerializeField] private Text _textComponent;
@@ -63,7 +54,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        GenerateGrid();
+        GridController.GenerateGrid(_width, _height, Cells, Colors);
         FindPath(null);
         _textComponent.text = $"{_steps}";
 
@@ -73,6 +64,7 @@ public class GameController : MonoBehaviour
         EventContoller.singleton.OnSlideCell.AddListener(FindPath);
         EventContoller.singleton.OnGameOver.AddListener(MathMoneyAndScore);
         EventContoller.singleton.OnGameOver.AddListener(GameOver);
+
         EventContoller.singleton.AnimationSlideCell.AddListener(AnimationSlideCell);
     }
 
@@ -81,75 +73,20 @@ public class GameController : MonoBehaviour
         if (_gameStarted) _timeGame += Time.fixedDeltaTime;
     }
 
-    #region Grid
-    void GenerateGrid()
-    {
-        Transform parent = GameObject.Find("Cells").transform;
-        int rand = Random.Range(-10, 10);
-
-
-        for (float x = -2.8f; x < _width; x += 0.7f)
-        {
-            for (float y = -3.8f; y < _height; y += 0.7f)
-            {
-                var spawendCell = Instantiate(_cellPrefab, new Vector3(x,y), Quaternion.identity, parent);
-                
-                var colorCell = new GameObject();
-                colorCell.name = $"{(int)x}:{(int)y}";
-                colorCell.transform.SetParent(spawendCell.transform);
-                colorCell.transform.position = new Vector2(spawendCell.transform.position.x + 0.005f, spawendCell.transform.position.y - 0.04f);
-                var spriteRender = colorCell.AddComponent<SpriteRenderer>();
-
-                spriteRender.sortingOrder = 2;
-                Сells.Add(spawendCell);
-                RandomizeSprite(spriteRender, rand);
-                spawendCell.name = $"Cell {Сells.Count}";
-            }
-        }
-    }
-
-    void RandomizeSprite(SpriteRenderer spriteRender, int rand)
-    {
-        var color = Randomize();
-
-
-        if (Colors.Count == 30 + rand || Colors.Count == 70 + rand) color = _comboCell;
-
-        while (Colors.Count > 9 && color == Colors[Colors.Count - 9] || Colors.Count > 1 && color == Colors[Colors.Count - 1])
-            color = Randomize();
-            
-
-        Colors.Add(color);
-        spriteRender.sprite = color;
-    }
-
-    Sprite Randomize()
-    {
-        int rand = Random.Range(0, 4);
-
-        if (rand == 0) return _blueCell;
-        if (rand == 1) return _greenCell;
-        if (rand == 2) return _redCell;
-        if (rand == 3) return _purpleCell;
-
-        return null;
-    }
-
-    #endregion
-
     #region Cells
+
     public void AnimationSlideCell(int indexOwner, int indexTarget, Vector2 lastPosition, int rotateSlide)
     {
-        var owner = Сells[indexOwner];
-        var target = Сells[indexTarget];
+        var owner = Cells[indexOwner];
+        var target = Cells[indexTarget];
 
-        if (target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == _comboCell) return;
+        if (target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo")) return;
 
-        Сells[indexOwner] = target;
-        Сells[indexTarget] = owner;
+        Cells[indexOwner] = target;
+        Cells[indexTarget] = owner;
 
-        Сells[indexOwner].GetComponent<Cell>().IndexInCellsArray = indexTarget;
-        Сells[indexTarget].GetComponent<Cell>().IndexInCellsArray = indexOwner;
+        Cells[indexOwner].GetComponent<Cell>().IndexInCellsArray = indexTarget;
+        Cells[indexTarget].GetComponent<Cell>().IndexInCellsArray = indexOwner;
 
         Colors[indexOwner] = target.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
         Colors[indexTarget] = owner.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
@@ -159,7 +96,7 @@ public class GameController : MonoBehaviour
         StartCoroutine(SlideCell(owner, target, lastPosition, rotateSlide));
     }
 
-    IEnumerator SlideCell(GameObject owner, GameObject target ,Vector2 lastPosition, int rotateSlide)
+    private IEnumerator SlideCell(GameObject owner, GameObject target, Vector2 lastPosition, int rotateSlide)
     {
         bool action = true;
 
@@ -168,8 +105,8 @@ public class GameController : MonoBehaviour
         Vector3 ownerPosition = lastPosition;
         Vector3 targetPosition = target.transform.position;
 
-        AnimationCurve _animationCurve = new AnimationCurve();
-        AnimationCurve _animationCurveTarget = new AnimationCurve();
+        AnimationCurve _animationCurve = new();
+        AnimationCurve _animationCurveTarget = new();
 
         if (rotateSlide == 0)
         {
@@ -189,7 +126,7 @@ public class GameController : MonoBehaviour
             _animationCurveTarget.AddKey(_animationSpeedSecond, lastPosition.y);
         }
 
-        float _totalTimeCurve = _animationCurve.keys[_animationCurve.keys.Length - 1].time;
+        float _totalTimeCurve = _animationCurve.keys[^1].time;
 
         while (action)
         {
@@ -198,7 +135,7 @@ public class GameController : MonoBehaviour
             {
                 owner.transform.position = new Vector2(_animationCurve.Evaluate(_currentTimeCurve), owner.transform.position.y);
                 target.transform.position = new Vector2(_animationCurveTarget.Evaluate(_currentTimeCurve), owner.transform.position.y);
-                
+
             }
 
             if (rotateSlide == 1)
@@ -220,18 +157,20 @@ public class GameController : MonoBehaviour
         EventContoller.singleton.OnSlideCell.Invoke(owner);
         yield break;
     }
-    public List<GameObject> ReturnSprites() { return Сells; }
 
-    #endregion
+    public List<GameObject> ReturnSprites() { return Cells; }
+
+#endregion
+
 
     #region AlhorytmFindPath
 
     private void FindPath(GameObject obj)
-    {
+        {
 
-    }
+        }
 
-    #endregion
+        #endregion
 
     #region SnakeController
     public bool IsMovePlayer(int index, Sprite color)
@@ -246,13 +185,13 @@ public class GameController : MonoBehaviour
 
         if (color == null) return false;
 
-        if (color == Colors[index] || color == _comboCell)
+        if (color == Colors[index] || color == Resources.Load<Sprite>("Sprites/Squares/Combo"))
         {
             _stepsSnake++;
             return true;
         }
 
-        if (Colors[_indexSelectedCell] == _comboCell)
+        if (Colors[_indexSelectedCell] == Resources.Load<Sprite>("Sprites/Squares/Combo"))
         {
             EventContoller.singleton.OnComboCell.Invoke();
 
@@ -265,7 +204,7 @@ public class GameController : MonoBehaviour
     
     public Sprite SelectSprite(int index) { return Colors[index]; }
 
-    public Transform SelectTransform(int index) { return Сells[index].transform; }
+    public Transform SelectTransform(int index) { return Cells[index].transform; }
 
     public bool IsBorderCell(int lastPosition, int currentPosition)
     {
@@ -294,7 +233,7 @@ public class GameController : MonoBehaviour
 
     public IEnumerator DestroyCell(int indexCell)
     {
-        var cell = Сells[indexCell];
+        var cell = Cells[indexCell];
 
         //Instantiate(_particleDestroyCell, new Vector3(cell.transform.position.x, cell.transform.position.y, -3), Quaternion.identity);
 
@@ -305,7 +244,7 @@ public class GameController : MonoBehaviour
 
     public bool IsLastCell(int currentPosition)
     {
-        if (currentPosition + 1 == Сells.Count) return true;
+        if (currentPosition + 1 == Cells.Count) return true;
 
         return false;
     }

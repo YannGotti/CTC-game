@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridController : MonoBehaviour
+public class LeaderController : MonoBehaviour
 {
     [SerializeField] private Transform[] _gridsTransform;
     private MySqlConnector _connector;
