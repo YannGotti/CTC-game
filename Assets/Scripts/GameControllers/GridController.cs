@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class GridController : MonoBehaviour
 {
+
+    private readonly static float _width = 3;
+    private readonly static float _height = 2;
+
     #region Grid
-    public static void GenerateGrid(float _width, float _height, List<GameObject> Ñells, List<Sprite> Colors)
+    public static void GenerateGrid(List<GameObject> Ñells, List<Sprite> Colors)
     {
         Transform parent = GameObject.Find("Cells").transform;
         int rand = Random.Range(-10, 10);

@@ -35,18 +35,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _stepsStatText;
     [SerializeField] private TMPro.TMP_Text _timeStatText;
 
-
-    private readonly float _width = 3;
-    private readonly float _height = 2;
-
     private int _indexSelectedCell;
-
 
     private MySqlConnector _mySqlConnector;
     private float _timeGame;
     private float _stepCount;
     private int _moneyDrop;
-
 
     //[Header("Settings particles")]
     //[SerializeField] private GameObject _particleDestroyCell;
@@ -54,7 +48,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        GridController.GenerateGrid(_width, _height, Cells, Colors);
+        GridController.GenerateGrid(Cells, Colors);
         FindPath(null);
         _textComponent.text = $"{_steps}";
 
