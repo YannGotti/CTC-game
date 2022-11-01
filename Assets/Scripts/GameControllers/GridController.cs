@@ -29,13 +29,13 @@ public class GridController : MonoBehaviour
 
                 spriteRender.sortingOrder = 2;
                 Ñells.Add(spawendCell);
-                RandomizeSprite(spriteRender, rand, _prefabCell, Colors);
+                RandomizeSprite(spriteRender, rand, Colors);
                 spawendCell.name = $"Cell {Ñells.Count}";
             }
         }
     }
 
-    private static void RandomizeSprite(SpriteRenderer spriteRender, int rand, GameObject _cellPrefab, List<Sprite> Colors)
+    private static void RandomizeSprite(SpriteRenderer spriteRender, int rand, List<Sprite> Colors)
     {
         var color = Randomize();
 
