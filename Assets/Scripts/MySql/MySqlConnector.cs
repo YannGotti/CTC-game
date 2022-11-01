@@ -32,7 +32,8 @@ public class MySqlConnector : MonoBehaviour
 
     public List<string> SelectUsersLeaders()
     {
-        string sql = "SELECT `username`, `score`, `count_step`, `time` FROM `users` LIMIT 5";
+        //SELECT * FROM users ORDER BY score DESC LIMIT 5
+        string sql = "SELECT `username`, `score`, `count_step`, `time` FROM users ORDER BY score DESC LIMIT 5";
         MySqlCommand cmd = new(sql, _connector);
         MySqlDataReader rdr = cmd.ExecuteReader();
 
