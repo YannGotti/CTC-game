@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 1
 --- !u!61 &13037463
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -416,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!1 &130666663
 GameObject:
   m_ObjectHideFlags: 0
@@ -2764,6 +2766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 2
 --- !u!60 &1221168853
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3260,6 +3263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!1 &1337728131
 GameObject:
   m_ObjectHideFlags: 0
@@ -4081,6 +4085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 2
 --- !u!60 &1678583248
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -4515,6 +4520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!61 &1911084329
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4762,6 +4768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 2
 --- !u!60 &2049765786
 PolygonCollider2D:
   m_ObjectHideFlags: 0

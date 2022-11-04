@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!114 &31113880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1430,6 +1431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!114 &517502614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2764,6 +2766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!114 &965480477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5520,6 +5523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedAnimation: 0
+  _angle: 5
 --- !u!114 &2005101346
 MonoBehaviour:
   m_ObjectHideFlags: 0

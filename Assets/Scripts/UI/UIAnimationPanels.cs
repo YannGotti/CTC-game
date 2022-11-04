@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIAnimationPanels : MonoBehaviour
 {
     [SerializeField] private float _speedAnimation;
+    [SerializeField] private float _angle;
 
     private Transform _gameObject;
 
@@ -33,7 +35,7 @@ public class UIAnimationPanels : MonoBehaviour
         while (timer < _speedAnimation)
         {
 
-            _gameObject.localEulerAngles = Vector3.Lerp(_gameObject.localEulerAngles, new Vector3(5, 5), _speedAnimation * Time.deltaTime);
+            _gameObject.localEulerAngles = Vector3.Lerp(_gameObject.localEulerAngles, new Vector3(_angle, _angle), _speedAnimation * Time.deltaTime);
 
             timer += Time.deltaTime;
 
