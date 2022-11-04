@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class UINewsPanelController : MonoBehaviour
+public class UIAnimationPanels : MonoBehaviour
 {
     [SerializeField] private float _speedAnimation;
 
