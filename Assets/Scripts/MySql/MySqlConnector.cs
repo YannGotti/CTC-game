@@ -1,10 +1,8 @@
-using UnityEngine;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
-using static UnityEditor.Progress;
-using System.Net.Mail;
+using UnityEngine;
 
 public class MySqlConnector : MonoBehaviour
 {
