@@ -1,19 +1,29 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class Cell : MonoBehaviour
 {
     [SerializeField] private GameObject _selectedCell;
+    private Transform _transform;
     public int IndexInCellsArray;
     private bool _dragging, _borderUp, _borderDown, _borderLeft, _borderRight, _isMove;
     private readonly float _maxMoving = 0.7f;
+    private readonly float _maxMovingChecker = 0.3f;
     private readonly float _maxMovingIfNotBorder = 0.1f;
     private GameController _gameController;
+    private BoxCollider2D _boxCollider2d;
     private Vector2 _lastPosition;
     private Transform _parent;
     private int _rotateSlide = -1;
 
 
-    private void Start() { _gameController = GameObject.Find("GameController").GetComponent<GameController>(); _parent = transform.parent; }
+    private void Start()
+    {
+        _transform = transform;
+        _gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        _boxCollider2d = GetComponent<BoxCollider2D>();
+        _parent = transform.parent; 
+    }
 
     private void OnMouseDrag()
     {
@@ -23,7 +33,7 @@ public class Cell : MonoBehaviour
         _inputMouse.z = 9;
         var _mousePosition = (Vector2)Camera.main.ScreenToWorldPoint(_inputMouse);
 
-        transform.position = _mousePosition;
+        _transform.position = _mousePosition;
 
         MoveMouseCell();
         _isMove = IsMove();
@@ -32,30 +42,30 @@ public class Cell : MonoBehaviour
     private void OnMouseDown()
     {
 
-        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
+        if (_transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
             return;
 
         Cursor.visible = false;
-        transform.SetParent(null);
-        _lastPosition = transform.position;
+        _transform.SetParent(null);
+        _lastPosition = _transform.position;
         IndexInCellsArray = _gameController.ReturnSprites().IndexOf(gameObject);
         GetComponent<SpriteRenderer>().sortingOrder = 2;
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
+        _transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 3;
         IsBorder();
         _dragging = true;
     }
 
     private void OnMouseUp()
     {
-        if (transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
+        if (_transform.GetChild(0).GetComponent<SpriteRenderer>().sprite == Resources.Load<Sprite>("Sprites/Squares/Combo"))
             return;
 
         Cursor.visible = true;
-        transform.position = _lastPosition;
+        _transform.position = _lastPosition;
         _borderDown = _borderUp = _borderLeft = _borderRight = false;
-        transform.SetParent(_parent);
+        _transform.SetParent(_parent);
         GetComponent<SpriteRenderer>().sortingOrder = 1;
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 2;
+        _transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 2;
         _dragging = false;
 
         if (_selectedCell == null) return;
@@ -89,58 +99,59 @@ public class Cell : MonoBehaviour
 
     private void MoveMouseCell()
     {
-        if (transform.position.x <= _lastPosition.x - _maxMoving)
+        //check max move cell
+        if (_transform.position.x <= _lastPosition.x - _maxMoving)
+            _transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
+
+        if (_transform.position.x >= _lastPosition.x + _maxMoving)
+            _transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y);
+
+        if (_transform.position.y >= _lastPosition.y + _maxMoving)
+            _transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving);
+
+        if (_transform.position.y <= _lastPosition.y - _maxMoving)
+            _transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
+
+
+        // check rotates
+        if (_transform.position.x <= _lastPosition.x - _maxMovingChecker
+            || _transform.position.x >= _lastPosition.x + _maxMovingChecker)
         {
-            transform.position = new Vector2(_lastPosition.x - _maxMoving, _lastPosition.y);
             _rotateSlide = 0;
         }
 
-        if (transform.position.x >= _lastPosition.x + _maxMoving) 
+        if (_transform.position.y >= _lastPosition.y + _maxMovingChecker
+            || _transform.position.y <= _lastPosition.y - _maxMovingChecker)
         {
-            transform.position = new Vector2(_lastPosition.x + _maxMoving, _lastPosition.y);
-            _rotateSlide = 0;
+            _rotateSlide = 1;
         }
+            
 
-        if (transform.position.y >= _lastPosition.y + _maxMoving)
-        {
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMoving);
-            _rotateSlide = 1; 
-        }
+        // borders
+        if (_borderLeft && _transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
+            _transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
 
-        if (transform.position.y <= _lastPosition.y - _maxMoving)
-        { 
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMoving);
-            _rotateSlide = 1; 
-        }
-
+        if (_borderRight && _transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
+            _transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
         
-        if (_borderLeft && transform.position.x < _lastPosition.x - _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x - _maxMovingIfNotBorder, _lastPosition.y);
+        if (_borderUp && _transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
+            _transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
 
-        if (_borderRight && transform.position.x > _lastPosition.x + _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x + _maxMovingIfNotBorder, _lastPosition.y);
-        
-        if (_borderUp && transform.position.y <= _lastPosition.y - _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y - _maxMovingIfNotBorder);
-
-        if (_borderDown && transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
-            transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
+        if (_borderDown && _transform.position.y >= _lastPosition.y + _maxMovingIfNotBorder)
+            _transform.position = new Vector2(_lastPosition.x, _lastPosition.y + _maxMovingIfNotBorder);
     }
 
     private bool IsMove()
     {
-        if (transform.position == new Vector3(_lastPosition.x - _maxMoving, _lastPosition.y))
-            return true;
 
-        if (transform.position == new Vector3(_lastPosition.x + _maxMoving, _lastPosition.y))
-            return true;
+        if (_selectedCell == null)
+            return false;
 
-        if (transform.position == new Vector3(_lastPosition.x, _lastPosition.y + _maxMoving))
-            return true;
+        var boundsSelectCell = _selectedCell.GetComponent<BoxCollider2D>();
 
-        if (transform.position == new Vector3(_lastPosition.x, _lastPosition.y - _maxMoving))
+        if (boundsSelectCell.bounds.Intersects(_boxCollider2d.bounds))
             return true;
-
+        
         return false;
     }
 
