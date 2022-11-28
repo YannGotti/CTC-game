@@ -120,8 +120,6 @@ public class GameController : MonoBehaviour
             _animationCurveTarget.AddKey(_animationSpeedSecond, lastPosition.y);
         }
 
-        Debug.Log(_animationCurve.keys.Length);
-
         float _totalTimeCurve = _animationCurve.keys[^1].time;
 
         while (action)
