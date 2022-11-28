@@ -6,7 +6,20 @@ public class PlayerAuth : MonoBehaviour
     [SerializeField] TMPro.TMP_InputField _inputUsername;
     [SerializeField] TMPro.TMP_Text _validationMessage;
 
-    public void EnableUsernamePanel() => _useranamePanel.SetActive(true);
+    public void EnableUsernamePanel()
+    {
+        var SqlConnector = GetComponent<MySqlConnector>();
+
+        if (SqlConnector.IsUserMacAdressCreated(SqlConnector.SelectLocalMacAdress()))
+        {
+            GetComponent<SceneController>().OpenGame();
+            GetComponent<SceneLoadedManager>().LoadScene();
+            return;
+        }
+
+        _useranamePanel.SetActive(true);
+
+    }
     public void DisableUsernamePanel() => _useranamePanel.SetActive(false);
 
     public void SelectUsernameField()

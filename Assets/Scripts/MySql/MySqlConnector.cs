@@ -23,7 +23,7 @@ public class MySqlConnector : MonoBehaviour
     {
         // Connection String.
         String connString = "Server=31.31.198.99"+ ";Database=u1625777_ctc-game"
-            + ";port=3306"+ ";User Id=u1625777_ctc-use" + ";password=qB6jF9sM2v";
+            + ";port=3306"+ ";User Id=u1625777_ctc-use" + ";password=qB6jF9sM2v" + ";CharSet=utf8mb4;";
 
         MySqlConnection conn = new(connString);
 
@@ -281,6 +281,23 @@ public class MySqlConnector : MonoBehaviour
 
         rdr.Close();
 
+
+        return false;
+    }
+
+    public bool IsUserMacAdressCreated(string mac)
+    {
+        string sql = $"SELECT COUNT(1) FROM users WHERE mac_address = '{mac}'";
+        MySqlCommand cmd = new(sql, _connector);
+        MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read() && rdr.GetInt32(0) != 0)
+        {
+            rdr.Close();
+            return true;
+        }
+
+        rdr.Close();
 
         return false;
     }
