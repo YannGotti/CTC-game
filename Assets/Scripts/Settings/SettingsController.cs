@@ -54,6 +54,8 @@ public class SettingsController : MonoBehaviour
         _bloom.active = s.Bloom;
         _vignette.active = s.VignetteEffect;
 
+
+
         _musicSoundValue.value= s.MusicSoundValue;
         _allSoundValue.value= s.AllSoundValue;
         _effectSoundValue.value= s.EffectSoundValue;

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e43f3ae36cb6246bb7e0a0a4ab1b69, type: 3}
   m_Name: DataSettings
   m_EditorClassIdentifier: 
-  FullscreenMode: 0
-  Bloom: 0
+  FullscreenMode: 1
+  Bloom: 1
   VignetteEffect: 0
-  AllSoundValue: 0.23756306
-  EffectSoundValue: 0.98674256
-  MusicSoundValue: 0.2
+  AllSoundValue: 0.32174727
+  EffectSoundValue: 0.16244707
+  MusicSoundValue: 0.9037464
