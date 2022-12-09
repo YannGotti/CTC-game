@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
@@ -20,11 +19,15 @@ public class SettingsController : MonoBehaviour
     [SerializeField] Bloom _bloom;
     [SerializeField] Vignette _vignette;
 
+    [SerializeField] Slider _allSoundValue;
+    [SerializeField] Slider _effectSoundValue;
+    [SerializeField] Slider _musicSoundValue;
+
+    [SerializeField] AudioSource _audioSource;
+
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        
         if (s == null) s = _settings;
     }
 
@@ -50,6 +53,10 @@ public class SettingsController : MonoBehaviour
         Screen.fullScreen = s.FullscreenMode;
         _bloom.active = s.Bloom;
         _vignette.active = s.VignetteEffect;
+
+        _musicSoundValue.value= s.MusicSoundValue;
+        _allSoundValue.value= s.AllSoundValue;
+        _effectSoundValue.value= s.EffectSoundValue;
     }
 
     public void OnFullscreenMode(bool mode) => Screen.fullScreen =  s.FullscreenMode = _toggleFullscreen.isOn;
@@ -58,7 +65,8 @@ public class SettingsController : MonoBehaviour
 
     public void OnVignetteMode(bool mode) => _vignette.active = s.VignetteEffect = _toggleVignette.isOn;
 
-
-
+    public void OnSliderAllSoundValue() => _audioSource.volume = s.AllSoundValue = _allSoundValue.value;
+    public void OnSliderEffectSoundValue() => s.EffectSoundValue = _effectSoundValue.value;
+    public void OnSliderMusicSoundValue() => _audioSource.volume = s.MusicSoundValue = _musicSoundValue.value;
 
 }

@@ -7,4 +7,9 @@ public class GameSettings : ScriptableObject
     public bool FullscreenMode;
     public bool Bloom;
     public bool VignetteEffect;
+
+    [Header("AudioSettings")]
+    public float AllSoundValue;
+    public float EffectSoundValue;
+    public float MusicSoundValue;
 }

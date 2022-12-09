@@ -216,9 +216,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 844120936}
-  - {fileID: 2026234978}
   - {fileID: 1165624834}
   - {fileID: 793033908}
+  - {fileID: 2026234978}
   - {fileID: 116455740}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1148,7 +1148,7 @@ RectTransform:
   - {fileID: 499443426}
   - {fileID: 1164574111}
   m_Father: {fileID: 56852717}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -1856,7 +1856,7 @@ RectTransform:
   - {fileID: 1865006102}
   - {fileID: 386456155}
   m_Father: {fileID: 56852717}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -1922,16 +1922,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1166481485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d78fcca70506244986d44c00d0312fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 15c8ba51d6d29374cbdcb9659e6ecc44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
-  _toggleFullscreen: {fileID: 0}
-  _toggleBloom: {fileID: 0}
-  _toggleVignette: {fileID: 0}
-  _postProcessVolume: {fileID: 0}
-  _bloom: {fileID: 0}
-  _vignette: {fileID: 0}
+  _allSounds:
+  - {fileID: 511983410268809859}
+  _effectSounds:
+  - {fileID: 511983410268809859}
+  _musicSounds: []
 --- !u!1 &1267846061
 GameObject:
   m_ObjectHideFlags: 0
@@ -3623,11 +3622,11 @@ RectTransform:
   m_Children:
   - {fileID: 664808642}
   m_Father: {fileID: 56852717}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -50}
+  m_AnchoredPosition: {x: 50, y: -135}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0, y: 1}
 --- !u!61 &2026234979
