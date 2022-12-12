@@ -20,4 +20,6 @@ public class EventContoller : MonoBehaviour
     public UnityEvent OnComboCell = new UnityEvent();
 
     public UnityEvent StartGame = new UnityEvent();
+
+    public UnityEvent<AudioSource> PlaySound = new UnityEvent<AudioSource>(); 
 }

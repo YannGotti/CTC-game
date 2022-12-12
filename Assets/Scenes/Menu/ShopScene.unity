@@ -257,6 +257,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1550208677}
+        m_TargetAssemblyTypeName: AudioPlayController, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &184610496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1960,6 +1972,7 @@ GameObject:
   - component: {fileID: 1550208676}
   - component: {fileID: 1550208674}
   - component: {fileID: 1550208675}
+  - component: {fileID: 1550208677}
   m_Layer: 0
   m_Name: SoundController
   m_TagString: Untagged
@@ -2182,6 +2195,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550208672}
   m_Enabled: 1
+--- !u!114 &1550208677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550208672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68712bf60bca4c543abd7f122efea26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonClick: {fileID: 1550208674}
 --- !u!1 &1578932143
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,6 +2571,7 @@ GameObject:
   - component: {fileID: 1896332645}
   - component: {fileID: 1896332644}
   - component: {fileID: 1896332643}
+  - component: {fileID: 1896332646}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2602,6 +2629,42 @@ Transform:
   m_Father: {fileID: 1056069051}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1896332646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896332642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a4be2c889265749a33a92653c0903f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnSlideCell:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDownCell:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  AnimationSlideCell:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveHeadSnake:
+    m_PersistentCalls:
+      m_Calls: []
+  OnComboCell:
+    m_PersistentCalls:
+      m_Calls: []
+  StartGame:
+    m_PersistentCalls:
+      m_Calls: []
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2017066115
 GameObject:
   m_ObjectHideFlags: 0

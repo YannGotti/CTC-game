@@ -1447,6 +1447,9 @@ MonoBehaviour:
   StartGame:
     m_PersistentCalls:
       m_Calls: []
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &982092673
 GameObject:
   m_ObjectHideFlags: 0
@@ -4610,9 +4613,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceEat
+      value: 
+      objectReference: {fileID: 982092681}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceWin
+      value: 
+      objectReference: {fileID: 982092676}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceLose
+      value: 
+      objectReference: {fileID: 982092679}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
       propertyPath: _statsPanel
       value: 
       objectReference: {fileID: 116455739}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceCombo
+      value: 
+      objectReference: {fileID: 982092682}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceError
+      value: 
+      objectReference: {fileID: 982092680}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceStart
+      value: 
+      objectReference: {fileID: 982092678}
+    - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
+      propertyPath: _sourceSwipe
+      value: 
+      objectReference: {fileID: 982092677}
     - target: {fileID: 5889903439337634187, guid: a86bc093e369ab84e995d4e6b103b17f, type: 3}
       propertyPath: _timeStatText
       value: 
@@ -4676,6 +4707,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _helpPanel: {fileID: 844120933}
+--- !u!114 &511983410268809864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511983410268809857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68712bf60bca4c543abd7f122efea26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1224311182010844527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4692,6 +4735,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1224311183287822244, guid: efffa0d166de3454f84868490b7f150b, type: 3}
+      propertyPath: _allAudio.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224311183287822244, guid: efffa0d166de3454f84868490b7f150b, type: 3}
       propertyPath: _AllAudio.Array.data[0]
       value: 
       objectReference: {fileID: 511983410268809859}
@@ -4703,10 +4750,6 @@ PrefabInstance:
       propertyPath: _allAudio.Array.data[0]
       value: 
       objectReference: {fileID: 511983410268809859}
-    - target: {fileID: 1224311183287822244, guid: efffa0d166de3454f84868490b7f150b, type: 3}
-      propertyPath: _allAudio.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1224311183287822245, guid: efffa0d166de3454f84868490b7f150b, type: 3}
       propertyPath: m_RootOrder
       value: 3

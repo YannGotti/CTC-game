@@ -35,6 +35,27 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _stepsStatText;
     [SerializeField] private TMPro.TMP_Text _timeStatText;
 
+    [Header("ComboSource")]
+    [SerializeField] private AudioSource _sourceCombo;
+
+    [Header("ComboEat")]
+    [SerializeField] private AudioSource _sourceEat;
+
+    [Header("ComboError")]
+    [SerializeField] private AudioSource _sourceError;
+
+    [Header("ComboWin")]
+    [SerializeField] private AudioSource _sourceWin;
+
+    [Header("ComboLose")]
+    [SerializeField] private AudioSource _sourceLose;
+
+    [Header("ComboStart")]
+    [SerializeField] private AudioSource _sourceStart;
+
+    [Header("ComboSwipe")]
+    [SerializeField] private AudioSource _sourceSwipe;
+
     private int _indexSelectedCell;
 
     private MySqlConnector _mySqlConnector;
@@ -49,6 +70,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         GridController.GenerateGrid(Cells, Colors);
+        EventContoller.singleton.PlaySound.Invoke(_sourceStart);
         FindPath(null);
         _textComponent.text = $"{_steps}";
 
@@ -147,7 +169,7 @@ public class GameController : MonoBehaviour
         owner.transform.position = targetPosition;
         target.transform.position = ownerPosition;
 
-        _audioSource.Play();
+        EventContoller.singleton.PlaySound.Invoke(_sourceSwipe);
         EventContoller.singleton.OnSlideCell.Invoke(owner);
         yield break;
     }
@@ -172,6 +194,8 @@ public class GameController : MonoBehaviour
 
         if (_stepsSnake == 0 && _indexSelectedCell == 0)
         {
+            EventContoller.singleton.PlaySound.Invoke(_sourceEat);
+
             _stepsSnake++;
             return true;
         }
@@ -181,16 +205,20 @@ public class GameController : MonoBehaviour
         if (color == Colors[index] || color == Resources.Load<Sprite>("Sprites/Squares/Combo"))
         {
             _stepsSnake++;
+
             return true;
         }
 
         if (Colors[_indexSelectedCell] == Resources.Load<Sprite>("Sprites/Squares/Combo"))
         {
             EventContoller.singleton.OnComboCell.Invoke();
+            EventContoller.singleton.PlaySound.Invoke(_sourceCombo);
 
             _stepsSnake++;
             return true;
         }
+
+        EventContoller.singleton.PlaySound.Invoke(_sourceError);
 
         return false;
     }
@@ -250,7 +278,12 @@ public class GameController : MonoBehaviour
         _stepCount++;
         _textComponent.text = $"{_steps -= 1}";
 
-        if (_steps == 0) EventContoller.singleton.OnGameOver.Invoke();
+
+        if (_steps == 0)
+        {
+            EventContoller.singleton.PlaySound.Invoke(_sourceLose);
+            EventContoller.singleton.OnGameOver.Invoke();
+        } 
     }
 
     public void StatsEnable()
@@ -301,6 +334,7 @@ public class GameController : MonoBehaviour
     private void GameOver()
     {
         _gameStarted = false;
+        EventContoller.singleton.PlaySound.Invoke(_sourceWin);
         StatsEnable();
     }
 

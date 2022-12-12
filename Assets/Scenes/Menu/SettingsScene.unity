@@ -259,6 +259,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 162348317}
+        m_TargetAssemblyTypeName: AudioPlayController, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &13037462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,6 +528,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 162348317}
+        m_TargetAssemblyTypeName: AudioPlayController, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &156048746
 GameObject:
@@ -565,6 +589,8 @@ GameObject:
   - component: {fileID: 162348315}
   - component: {fileID: 162348314}
   - component: {fileID: 162348316}
+  - component: {fileID: 162348317}
+  - component: {fileID: 162348318}
   m_Layer: 0
   m_Name: SoundController
   m_TagString: Untagged
@@ -779,6 +805,55 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &162348317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162348313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68712bf60bca4c543abd7f122efea26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonClick: {fileID: 162348314}
+--- !u!114 &162348318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162348313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a4be2c889265749a33a92653c0903f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnSlideCell:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDownCell:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  AnimationSlideCell:
+    m_PersistentCalls:
+      m_Calls: []
+  MoveHeadSnake:
+    m_PersistentCalls:
+      m_Calls: []
+  OnComboCell:
+    m_PersistentCalls:
+      m_Calls: []
+  StartGame:
+    m_PersistentCalls:
+      m_Calls: []
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &199901502
 GameObject:
   m_ObjectHideFlags: 0
@@ -3027,6 +3102,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 162348317}
+        m_TargetAssemblyTypeName: AudioPlayController, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1221168848
 GameObject:
@@ -4563,6 +4650,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SettingsController, Assembly-CSharp
         m_MethodName: OnVignetteMode
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 162348317}
+        m_TargetAssemblyTypeName: AudioPlayController, Assembly-CSharp
+        m_MethodName: PlayButtonSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
