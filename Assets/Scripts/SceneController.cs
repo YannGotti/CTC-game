@@ -23,6 +23,12 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene(3);
     }
 
+
+    public void OpenShop()
+    {
+        SceneManager.LoadScene(4);
+    }
+
     public void OpenLastScene()
     {
         SceneManager.LoadScene(0);
