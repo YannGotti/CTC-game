@@ -4,35 +4,33 @@ using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
-    public int countCoins;
+    [SerializeField] private int countCoins;
 
-    public TMP_Text coinsUI;
-    public ShopItemSO[] shopItemsSO;
-    public ShopTemplate[] shopPanels;
-    public Button[] myPurchaseBtns; 
+    [SerializeField] private TMP_Text coinsUI;
+    [SerializeField] private ShopItemSO[] shopItemsSO;
+    [SerializeField] private ShopTemplate[] shopPanels;
+    [SerializeField] private Button[] myPurchaseBtns;
+
+    [SerializeField] private MySqlConnector _connector;
 
 
     void Start()
     {
+        countCoins = _connector.SelectMoney();
+
         LoadPanels();
-        CheckPurchaseable(); 
+        CheckPurchaseable();
 
-        coinsUI.text = $"Монеты: {countCoins}";
-    }
-
-    public void AddCoins()
-    {
-        countCoins += 10;
-        coinsUI.text = $"Монеты: {countCoins}";
-        CheckPurchaseable(); 
+        coinsUI.text = $"{countCoins}";
     }
 
     public void PurchaseableItem(int btnNum)
     {
         if(countCoins >= shopItemsSO[btnNum].baseCost)
         {
+            _connector.UpdateMoneyUser(-shopItemsSO[btnNum].baseCost);
             countCoins -= shopItemsSO[btnNum].baseCost;
-            coinsUI.text = $"Монеты: {countCoins}";
+            coinsUI.text = $"{countCoins}";
             CheckPurchaseable(); 
             // ActivateBuyPanel(); 
         }

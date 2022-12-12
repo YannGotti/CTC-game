@@ -220,7 +220,7 @@ public class MySqlConnector : MonoBehaviour
         return 0;
     }
 
-    private int SelectMoney()
+    public int SelectMoney()
     {
         var macAdress = SelectLocalMacAdress();
 

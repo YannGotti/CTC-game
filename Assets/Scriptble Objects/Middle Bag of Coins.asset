@@ -17,4 +17,4 @@ MonoBehaviour:
   description: "\u0421\u043E\u0434\u0435\u0440\u0436\u0438\u0442 \u0432 \u0441\u0435\u0431\u0435
     3500 \u043C\u043E\u043D\u0435\u0442"
   baseCost: 799
-  iconItem: {fileID: 0}
+  iconItem: {fileID: 21300000, guid: 5f49f7e16d2f1414aafc9a6ba1c17c54, type: 3}
