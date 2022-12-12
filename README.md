@@ -1,6 +1,6 @@
 ## CTC-game
 - Казуальная игра змейка с перемещением фишек на поле.
-- Последняя [Сборка](https://github.com/YannGotti/CTC-game/releases/tag/v1.0.0-alpha).
+- Последняя [Сборка](https://github.com/YannGotti/CTC-game/releases/tag/v1.0.0).
 
 ## Средства необходимые для запуска игры
 
