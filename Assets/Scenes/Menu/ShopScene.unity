@@ -1777,9 +1777,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
-  _allSounds: []
-  _effectSounds: []
-  _musicSounds: []
+  _allSounds:
+  - {fileID: 1550208674}
+  - {fileID: 1550208675}
+  _effectSounds:
+  - {fileID: 1550208674}
+  _musicSounds:
+  - {fileID: 1550208675}
 --- !u!114 &1401436651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1953,6 +1957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1550208673}
+  - component: {fileID: 1550208676}
   - component: {fileID: 1550208674}
   - component: {fileID: 1550208675}
   m_Layer: 0
@@ -2169,6 +2174,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &1550208676
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550208672}
+  m_Enabled: 1
 --- !u!1 &1578932143
 GameObject:
   m_ObjectHideFlags: 0

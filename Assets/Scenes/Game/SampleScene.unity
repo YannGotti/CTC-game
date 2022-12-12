@@ -2607,9 +2607,24 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
   _allSounds:
   - {fileID: 511983410268809859}
+  - {fileID: 982092682}
+  - {fileID: 982092681}
+  - {fileID: 982092680}
+  - {fileID: 982092679}
+  - {fileID: 982092677}
+  - {fileID: 982092676}
+  - {fileID: 982092683}
   _effectSounds:
   - {fileID: 511983410268809859}
-  _musicSounds: []
+  - {fileID: 982092682}
+  - {fileID: 982092681}
+  - {fileID: 982092680}
+  - {fileID: 982092679}
+  - {fileID: 982092678}
+  - {fileID: 982092677}
+  - {fileID: 982092676}
+  _musicSounds:
+  - {fileID: 982092683}
 --- !u!1 &1267846061
 GameObject:
   m_ObjectHideFlags: 0

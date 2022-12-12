@@ -5471,5 +5471,9 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
   _allSounds:
   - {fileID: 255428857}
-  _effectSounds: []
-  _musicSounds: []
+  - {fileID: 162348314}
+  - {fileID: 162348316}
+  _effectSounds:
+  - {fileID: 162348314}
+  _musicSounds:
+  - {fileID: 162348316}

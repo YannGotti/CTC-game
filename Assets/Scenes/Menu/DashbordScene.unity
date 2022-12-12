@@ -8420,8 +8420,12 @@ MonoBehaviour:
   _settings: {fileID: 11400000, guid: 9b11bc1847585e747bab7ba2dac72a84, type: 2}
   _allSounds:
   - {fileID: 212801135}
-  _effectSounds: []
-  _musicSounds: []
+  - {fileID: 809133158}
+  - {fileID: 809133160}
+  _effectSounds:
+  - {fileID: 809133158}
+  _musicSounds:
+  - {fileID: 809133160}
 --- !u!1 &2056654576
 GameObject:
   m_ObjectHideFlags: 0
